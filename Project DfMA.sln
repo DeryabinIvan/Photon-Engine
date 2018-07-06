@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApp", "TestApp\TestApp.vcxproj", "{44D8DCDD-CD45-4E0C-A785-ED1FD5B3B386}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Photon Engine", "Photon Engine\Photon Engine.vcxproj", "{908344B3-E427-4839-B7B3-3369A10BF236}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44D8DCDD-CD45-4E0C-A785-ED1FD5B3B386}.Debug|x64.ActiveCfg = Debug|x64
+		{44D8DCDD-CD45-4E0C-A785-ED1FD5B3B386}.Debug|x64.Build.0 = Debug|x64
+		{44D8DCDD-CD45-4E0C-A785-ED1FD5B3B386}.Debug|x86.ActiveCfg = Debug|x64
+		{44D8DCDD-CD45-4E0C-A785-ED1FD5B3B386}.Release|x64.ActiveCfg = Release|x64
+		{44D8DCDD-CD45-4E0C-A785-ED1FD5B3B386}.Release|x64.Build.0 = Release|x64
+		{44D8DCDD-CD45-4E0C-A785-ED1FD5B3B386}.Release|x86.ActiveCfg = Release|x64
+		{908344B3-E427-4839-B7B3-3369A10BF236}.Debug|x64.ActiveCfg = Debug|x64
+		{908344B3-E427-4839-B7B3-3369A10BF236}.Debug|x64.Build.0 = Debug|x64
+		{908344B3-E427-4839-B7B3-3369A10BF236}.Debug|x86.ActiveCfg = Debug|x64
+		{908344B3-E427-4839-B7B3-3369A10BF236}.Release|x64.ActiveCfg = Release|x64
+		{908344B3-E427-4839-B7B3-3369A10BF236}.Release|x64.Build.0 = Release|x64
+		{908344B3-E427-4839-B7B3-3369A10BF236}.Release|x86.ActiveCfg = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87478ADB-BB75-4468-AD92-BE1325078987}
+	EndGlobalSection
+EndGlobal
