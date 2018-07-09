@@ -19,33 +19,111 @@
     <Filter Include="Header Files\low-level">
       <UniqueIdentifier>{5579c0fb-bdf1-44eb-b101-3d37d91c8453}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\low-level\dll-stuff">
+      <UniqueIdentifier>{e8a5d19c-2f49-4e6c-8852-a8065558f7ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\low-level\dll-stuff">
+      <UniqueIdentifier>{2f464617-0a41-47a1-9eb7-bd15abfe61a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\high-level">
+      <UniqueIdentifier>{e2c5c4f1-b92e-4bd0-a379-38a46edfc7d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\high-level">
+      <UniqueIdentifier>{698c2aa9-c5a2-41be-bde9-b5093e60e894}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Photon Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="EBO.h">
       <Filter>Header Files\low-level</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
+      <Filter>Header Files\low-level\dll-stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="GLObject.h">
       <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="GL_Enums.h">
+      <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="VAO.h">
+      <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="VBO.h">
+      <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Photon Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files\low-level\dll-stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="EBO.cpp">
+      <Filter>Source Files\low-level</Filter>
+    </ClCompile>
+    <ClCompile Include="VAO.cpp">
+      <Filter>Source Files\low-level</Filter>
+    </ClCompile>
+    <ClCompile Include="VBO.cpp">
       <Filter>Source Files\low-level</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files\low-level</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
