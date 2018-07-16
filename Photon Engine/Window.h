@@ -3,15 +3,19 @@
 #include "stdafx.h"
 
 namespace ph_engine {
-	class WindowSettings {
-
+	struct WindowSettings {
+		unsigned char OPENGL_MAJOR, OPENGL_MINOR;
 	};
+
+	typedef void(*ClearFunction)(void);
+	typedef void(*InitFunction)(void);
 
 	class PHOTONENGINE_API Window {
 		GLFWwindow* id;
 		int width, heigth;
 
 		void resize(GLFWwindow*, int, int);
+		ClearFunction custom = nullptr;
 
 		static int WINDOWS_COUNT;
 
@@ -21,13 +25,20 @@ namespace ph_engine {
 
 			~Window();
 
+			void customOpenGLInit(InitFunction fun);
+			void setCustomClearFunction(ClearFunction fun);
+
 			void setActive();
 			void swapBuffer();
+			void clear();
 
 			bool shouldClose();
 			void close();
+			void hideCursor();
+			void showCursor();
 
 			void pollEvents();
+			GLFWwindow* getGLFWPointer();
 	};
 }
 

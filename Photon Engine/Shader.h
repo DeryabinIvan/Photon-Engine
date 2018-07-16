@@ -11,8 +11,6 @@ namespace ph_engine {
 
 		GLuint getID() { return objectID; }
 
-		// Inherited via GLObject
-		virtual void bind() override;
-		virtual void unbind() override;
+		void remove();
 	};
 }

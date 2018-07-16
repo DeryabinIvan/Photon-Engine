@@ -19,12 +19,12 @@ namespace ph_engine {
 		scroll_y = sy;
 	}
 
-	Mouse::Mouse(GLFWwindow* _window) {
-		window = _window;
+	Mouse::Mouse(Window& _window) {
+		window = _window.getGLFWPointer();
 
-		glfwSetCursorPosCallback(_window, pos_callback);
-		glfwSetMouseButtonCallback(_window, btn_callback);
-		glfwSetScrollCallback(_window, scr_callback);
+		glfwSetCursorPosCallback(window, pos_callback);
+		glfwSetMouseButtonCallback(window, btn_callback);
+		glfwSetScrollCallback(window, scr_callback);
 	}
 
 	void Mouse::setPosition(double x, double y) {

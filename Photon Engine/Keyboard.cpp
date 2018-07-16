@@ -27,12 +27,17 @@ namespace ph_engine {
 		}
 	}
 
-	Keyboard::Keyboard(GLFWwindow* window) {
-		glfwSetKeyCallback(window, callback);
+	Keyboard::Keyboard(Window& window) {
+		glfwSetKeyCallback(window.getGLFWPointer(), callback);
 	}
 
 	bool Keyboard::keyPressed(int key) const {
 		return keys[key];
+	}
+
+	int Keyboard::getPressedKey() const {
+		for (int i = 30; i < GLFW_KEY_LAST; i++)
+			if (keys[i]) return i;
 	}
 
 	int Keyboard::keyMode() const {

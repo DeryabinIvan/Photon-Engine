@@ -16,16 +16,16 @@ namespace ph_engine {
 	}
 
 	void Player::move(const Keyboard& key) {
-		if (key.keyPressed(GLFW_KEY_W))
+		if (key.keyPressed(Keyboard::KEY_W))
 			position += speed * front;
 
-		if (key.keyPressed(GLFW_KEY_S))
+		if (key.keyPressed(Keyboard::KEY_S))
 			position -= speed * front;
 
-		if (key.keyPressed(GLFW_KEY_A))
+		if (key.keyPressed(Keyboard::KEY_A))
 			position -= glm::normalize(glm::cross(front, up)) * speed;
 
-		if (key.keyPressed(GLFW_KEY_D))
+		if (key.keyPressed(Keyboard::KEY_D))
 			position += glm::normalize(glm::cross(front, up)) * speed;
 	}
 	void Player::look(const Mouse& mouse) {

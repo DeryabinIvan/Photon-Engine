@@ -30,10 +30,10 @@ namespace ph_engine {
 		return glGetUniformLocation(objectID, name);
 	}
 
-	void ShaderProgram::bind() {
+	void ShaderProgram::use() {
 		glUseProgram(objectID);
 	}
-	void ShaderProgram::unbind() {
-		glUseProgram(0);
+	bool ShaderProgram::isUniformExist(const std::string& name) {
+		return (glGetUniformLocation(objectID, name.c_str()) != -1);
 	}
 }

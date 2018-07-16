@@ -63,15 +63,10 @@ namespace ph_engine {
 		return true;
 	}
 
-
-	void Shader::bind() {
-		//...
-	}
-
 	//This function delete shader
 	//If you already link shaders in program
 	//use this fuction
-	void Shader::unbind() {
+	void Shader::remove() {
 		glDeleteShader(objectID);
 	}
 }

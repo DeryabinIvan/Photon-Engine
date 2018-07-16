@@ -10,14 +10,13 @@ namespace ph_engine {
 
 		public:
 		Texture();
-		~Texture();
 		// Load texture from file
 		void loadFromFile(const char* path, TEXTURE_LOAD_TYPE type = RGB);
 
 		void activeTexture(GLuint);
 
 		// Inherited via GLObject
-		virtual void bind() override;
-		virtual void unbind() override;
+		void bind();
+		void unbind();
 	};
 }

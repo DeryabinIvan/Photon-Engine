@@ -16,7 +16,7 @@ namespace ph_engine {
 		}
 
 		// Inherited via GLObject
-		virtual void bind() override;
-		virtual void unbind() override;
+		void bind();
+		void unbind();
 	};
 }

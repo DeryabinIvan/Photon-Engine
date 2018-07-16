@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "Window.h"
 
 namespace ph_engine {
 	class PHOTONENGINE_API Mouse {
@@ -20,7 +21,7 @@ namespace ph_engine {
 		double sens;
 
 		public:
-		Mouse(GLFWwindow* window);
+		Mouse(Window& window);
 
 		void setPosition(double x, double y);
 		void setSensitivity(double sens);
