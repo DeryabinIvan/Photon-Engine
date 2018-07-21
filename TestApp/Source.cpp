@@ -30,7 +30,7 @@ int main() {
 	frag.remove();
 
 	Model barrel;
-	barrel.load("res/model/nanosuit/nanosuit.obj");
+	barrel.load("res/model/nanosuit/nanosuit.blend");
 
 	Player player(0, 0, 3, 0.005f);
 	window.hideCursor();
