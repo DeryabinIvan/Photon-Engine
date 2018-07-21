@@ -20,16 +20,24 @@ namespace ph_engine {
 
 	class PHOTONENGINE_API Model {
 		public:
-		void draw(ShaderProgram& program);
-		void load(string path);
+			Model();
+			void draw(ShaderProgram& program);
+			void load(string path);
 
+			void scale(float sx, float sy, float sz);
+			void scale(float scale);
+			void translate(float x, float y, float z);
+			void rotate(float angle, glm::vec3 axis);
+			void rotate(float angle, float axisX, float axisY, float axisZ);
+			const glm::mat4 getModelMatrix();
 		private:
-		vector<Mesh> meshes;
-		vector<TextureStruct> textures_loaded;
-		string dir;
+			vector<Mesh> meshes;
+			vector<TextureStruct> textures_loaded;
+			string dir;
+			glm::mat4 model;
 
-		void processNode(aiNode* node, const aiScene* scene);
-		Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-		vector<TextureStruct> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
+			void processNode(aiNode* node, const aiScene* scene);
+			Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+			vector<TextureStruct> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 	};
 }

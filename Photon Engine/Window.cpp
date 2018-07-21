@@ -72,7 +72,7 @@ void ph_engine::Window::swapBuffer() {
 void ph_engine::Window::clear() {
 	if (!custom) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.0625f, 0.0625f, 0.0625f, 1);
+		glClearColor(0.5, 0.5, 0.5, 1);
 	} else custom();
 }
 

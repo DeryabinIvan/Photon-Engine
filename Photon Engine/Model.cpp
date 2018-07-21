@@ -2,6 +2,10 @@
 #include "Model.h"
 
 namespace ph_engine {
+	Model::Model(){
+		model = glm::mat4(1.f);
+	}
+
 	void Model::draw(ShaderProgram& program) {
 		for (uint i = 0; i < meshes.size(); i++)
 			meshes[i].draw(program);
@@ -18,6 +22,28 @@ namespace ph_engine {
 
 		dir = path.substr(0, path.find_last_of('/'));
 		processNode(scene->mRootNode, scene);
+	}
+
+	void Model::scale(float sx, float sy, float sz){
+		model = glm::scale(model, glm::vec3(sx, sy, sz));
+	}
+	void Model::scale(float s) {
+		model = glm::scale(model, glm::vec3(s, s, s));
+	}
+
+	void Model::translate(float x, float y, float z){
+		model = glm::translate(model, glm::vec3(x, y, z));
+	}
+
+	void Model::rotate(float angle, glm::vec3 vec){
+		model = glm::rotate(model, angle, vec);
+	}
+	void Model::rotate(float angle, float axisX, float axisY, float axisZ){
+		model = glm::rotate(model, angle, glm::vec3(axisX, axisY, axisZ));
+	}
+
+	const glm::mat4 Model::getModelMatrix(){
+		return model;
 	}
 
 	void Model::processNode(aiNode* node, const aiScene* scene) {

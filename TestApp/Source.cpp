@@ -29,8 +29,10 @@ int main() {
 	vert.remove();
 	frag.remove();
 
-	Model barrel;
-	barrel.load("res/model/nanosuit/nanosuit.blend");
+	Model testModel;
+	testModel.load("res/model/pumpkin/pumpkin.fbx");
+	testModel.translate(0, 0, 2);
+	testModel.scale(1.f/256.f);
 
 	Player player(0, 0, 3, 0.005f);
 	window.hideCursor();
@@ -51,19 +53,13 @@ int main() {
 
 		program.use();
 		glm::mat4 projection = glm::perspective(glm::radians(45.f), (float)width / (float)height, 0.1f, 100.f);
-		glm::mat4 model(1.f), view(1.f);
 		
-		view = player.getViewMatrix();
-
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-
-		program.setMat4("model", model);
-		program.setMat4("view", view);
+		program.setMat4("model", testModel.getModelMatrix());
+		program.setMat4("view", player.getViewMatrix());
 		program.setMat4("projection", projection);
 
 		//draw here
-		barrel.draw(program);
+		testModel.draw(program);
 
 		window.swapBuffer();
 	}
