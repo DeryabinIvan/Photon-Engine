@@ -1,10 +1,15 @@
-#include "stdafx.h"
 #include "System.h"
 
-double ph_engine::System::getTime() {
-	return glfwGetTime();
+#include "GLFW/glfw3.h"
+
+namespace ph_engine {
+	double System::getTime() {
+		return glfwGetTime();
+	}
+
+	void System::setTime(double time) {
+		glfwSetTime(time);
+	}
 }
 
-void ph_engine::System::setTime(double time) {
-	glfwSetTime(time);
-}
+

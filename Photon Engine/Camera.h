@@ -1,7 +1,8 @@
 #pragma once
-#pragma warning( disable:4251 )
 
-#include "stdafx.h"
+#include "Config.h"
+
+#include "GLM/glm.hpp"
 
 namespace ph_engine {
 	class PHOTONENGINE_API Camera {

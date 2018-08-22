@@ -1,5 +1,8 @@
 # About
-This is simple OpenGL-based game or graphics engine, written on C++.
+This is simple OpenGL-based game engine, written on C++. Now it`s only a OpenGL wrap.
+# Disclamer
+- May contains bugs
+- My English :)
 # Libraries usage
 - [GLFW](http://www.glfw.org/ "GLFW link")
 - [GLEW](http://glew.sourceforge.net/ "GLEW link")
@@ -9,7 +12,3 @@ This is simple OpenGL-based game or graphics engine, written on C++.
 # Requirements
 - OpenGL 3.3+
 - Windows x64 (in future will be cross-platform)
-# Installation
-1) Clone project in any folder on you computer
-2) Open project and correct paths to include and lib folder
-3) Build application 

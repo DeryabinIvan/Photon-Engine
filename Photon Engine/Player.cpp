@@ -1,7 +1,6 @@
-#include "stdafx.h"
 #include "Player.h"
 
-#pragma warning( disable:4244 )
+#include "GLM/trigonometric.hpp"
 
 namespace ph_engine {
 	Player::Player(glm::vec3 posistion, float speed) {

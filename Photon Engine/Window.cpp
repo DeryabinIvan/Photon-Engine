@@ -1,5 +1,6 @@
-#include "stdafx.h"
 #include "Window.h"
+
+
 
 int ph_engine::Window::WINDOWS_COUNT = 0;
 
@@ -58,7 +59,7 @@ void ph_engine::Window::customOpenGLInit(InitFunction fun) {
 	fun();
 }
 
-void ph_engine::Window::setCustomClearFunction(ClearFunction fun) {
+void ph_engine::Window::customClearFunction(ClearFunction fun) {
 	custom = fun;
 }
 

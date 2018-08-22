@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.h"
 #include "GLObject.h"
 #include "GL_Enums.h"
 

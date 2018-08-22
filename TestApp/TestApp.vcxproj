@@ -49,7 +49,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\wo9di\Documents\Visual Studio 2017\Projects\Photon-Engine\Photon Engine;C:\Users\wo9di\Documents\Visual Studio 2017\Projects\Photon-Engine\Photon Engine\libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wo9di\Documents\Visual Studio 2017\Projects\Photon-Engine\Photon Engine\libs\include;C:\Users\wo9di\Documents\Visual Studio 2017\Projects\Photon-Engine\Photon Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

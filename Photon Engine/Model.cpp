@@ -1,5 +1,9 @@
-#include "stdafx.h"
 #include "Model.h"
+
+#include "GLEW/glew.h"
+#include "GLM/glm.hpp"
+#include "GLM/gtc/matrix_transform.hpp"
+#include "SOIL/SOIL.h"
 
 namespace ph_engine {
 	Model::Model(){
@@ -35,9 +39,6 @@ namespace ph_engine {
 		model = glm::translate(model, glm::vec3(x, y, z));
 	}
 
-	void Model::rotate(float angle, glm::vec3 vec){
-		model = glm::rotate(model, angle, vec);
-	}
 	void Model::rotate(float angle, float axisX, float axisY, float axisZ){
 		model = glm::rotate(model, angle, glm::vec3(axisX, axisY, axisZ));
 	}

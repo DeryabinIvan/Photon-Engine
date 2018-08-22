@@ -1,5 +1,6 @@
-#include "stdafx.h"
 #include "Shader.h"
+
+#include "GLEW/glew.h"
 
 #include <string>
 #include <iostream>

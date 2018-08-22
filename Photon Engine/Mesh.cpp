@@ -1,5 +1,6 @@
-#include "stdafx.h"
 #include "Mesh.h"
+
+#include "GLEW/glew.h"
 
 ph_engine::Mesh::Mesh(vector<Vertex> v, vector<uint> i, vector<TextureStruct> t) {
 	vert = v;

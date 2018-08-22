@@ -1,5 +1,6 @@
 #pragma once
-#include "stdafx.h"
+
+#include "Config.h"
 
 namespace ph_engine {
 	class PHOTONENGINE_API System {

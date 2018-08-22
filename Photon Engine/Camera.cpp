@@ -1,5 +1,6 @@
-#include "stdafx.h"
 #include "Camera.h"
+
+#include "GLM/gtc/matrix_transform.hpp"
 
 namespace ph_engine {
 	Camera::Camera() {

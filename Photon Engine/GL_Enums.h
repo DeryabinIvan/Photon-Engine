@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdafx.h"
+#include "Config.h"
 
 namespace ph_engine {
 	PHOTONENGINE_API enum SHADER_TYPE { FRAGMENT, VERTEX };

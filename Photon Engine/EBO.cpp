@@ -1,5 +1,6 @@
-#include "stdafx.h"
 #include "EBO.h"
+
+#include "GLEW/glew.h"
 
 namespace ph_engine {
 	EBO::EBO() {

@@ -1,5 +1,7 @@
-#include "stdafx.h"
 #include "Texture.h"
+
+#include "GLEW/glew.h"
+#include "SOIL/SOIL.h"
 
 namespace ph_engine {
 
@@ -22,7 +24,7 @@ namespace ph_engine {
 		unbind();
 	}
 
-	void Texture::activeTexture(GLuint num) {
+	void Texture::activeTexture(uint num) {
 		if (num >= 0 && num <= 31) {
 			glActiveTexture(GL_TEXTURE0 + num);
 		}

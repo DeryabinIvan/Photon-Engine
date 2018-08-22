@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdafx.h"
+#include "Config.h"
 
 #include "Mesh.h"
 #include "ShaderProgram.h"
@@ -27,7 +27,6 @@ namespace ph_engine {
 			void scale(float sx, float sy, float sz);
 			void scale(float scale);
 			void translate(float x, float y, float z);
-			void rotate(float angle, glm::vec3 axis);
 			void rotate(float angle, float axisX, float axisY, float axisZ);
 			const glm::mat4 getModelMatrix();
 		private:

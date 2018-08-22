@@ -1,11 +1,12 @@
 #pragma once
-
-#include "GLFW/glfw3.h"
+#pragma warning( disable:4244 )
 
 #include "Camera.h"
 
 #include "Keyboard.h"
 #include "Mouse.h"
+
+#include "GLFW/glfw3.h"
 
 namespace ph_engine {
 	class PHOTONENGINE_API Player: public Camera {

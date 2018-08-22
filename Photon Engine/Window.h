@@ -1,6 +1,9 @@
 #pragma once
 
-#include "stdafx.h"
+#include "Config.h"
+
+#include "GLEW/glew.h"
+#include "GLFW/glfw3.h"
 
 namespace ph_engine {
 	struct WindowSettings {
@@ -26,7 +29,7 @@ namespace ph_engine {
 			~Window();
 
 			void customOpenGLInit(InitFunction fun);
-			void setCustomClearFunction(ClearFunction fun);
+			void customClearFunction(ClearFunction fun);
 
 			void setActive();
 			void swapBuffer();

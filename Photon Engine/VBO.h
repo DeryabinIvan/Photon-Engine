@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.h"
 #include "GLObject.h"
 #include "GL_Enums.h"
 
@@ -7,18 +8,18 @@ namespace ph_engine {
 	class PHOTONENGINE_API VBO:GLObject {
 		public:
 		VBO();
-		~VBO() { glDeleteVertexArrays(1, &objectID); }
+		~VBO();
 
 		void load(size_t size, const void* data, DRAW_TYPE type = STATIC);
 
-		void remove() { glDeleteVertexArrays(1, &objectID); }
+		void remove() { this->~VBO(); }
 
 		//@param stribe is automaticle mul by sizeof(float)
-		void addVertexAttrib(GLuint index, GLuint size, GLboolean normalized, GLsizei stride, const GLvoid* offset = (GLvoid*) 0);
+		void addVertexAttrib(uint index, uint size, bool normalized, int stride, const void* offset = (void*) 0);
 		//Enable attrib by index
-		void enableAttrib(GLuint index) { glEnableVertexAttribArray(index); }
+		void enableAttrib(uint index);
 		//Disable attrib by index
-		void disableAttrib(GLuint index) { glDisableVertexAttribArray(index); }
+		void disableAttrib(uint index);
 
 		void bind();
 		void unbind();

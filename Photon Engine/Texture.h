@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.h"
 #include "GLObject.h"
 
 namespace ph_engine {
@@ -13,7 +14,7 @@ namespace ph_engine {
 		// Load texture from file
 		void loadFromFile(const char* path, TEXTURE_LOAD_TYPE type = RGB);
 
-		void activeTexture(GLuint);
+		void activeTexture(uint);
 
 		// Inherited via GLObject
 		void bind();

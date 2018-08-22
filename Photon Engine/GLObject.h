@@ -1,10 +1,10 @@
 #pragma once
 
-#include "stdafx.h"
+#include "Config.h"
 
 namespace ph_engine {
 	class GLObject {
 		protected:
-		GLuint objectID, target = 0;
+		uint objectID = 0, target = 0;
 	};
 }

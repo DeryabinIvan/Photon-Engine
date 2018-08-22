@@ -1,7 +1,9 @@
 #pragma once
 
-#include "stdafx.h"
+#include "Config.h"
 #include "Window.h"
+
+#include "GLFW/glfw3.h"
 
 namespace ph_engine {
 	class PHOTONENGINE_API Mouse {

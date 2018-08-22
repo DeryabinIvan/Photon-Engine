@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.h"
 #include "GLObject.h"
 
 namespace ph_engine {
@@ -7,9 +8,7 @@ namespace ph_engine {
 	class PHOTONENGINE_API VAO:public GLObject {
 		public:
 		VAO();
-		~VAO() {
-			glDeleteBuffers(1, &objectID);
-		}
+		~VAO();
 
 		void remove() {
 			this->~VAO();
