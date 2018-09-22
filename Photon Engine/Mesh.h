@@ -8,6 +8,7 @@
 #include "VBO.h"
 #include "EBO.h"
 #include "ShaderProgram.h"
+#include "Texture.h"
 
 #include "assimp/scene.h"
 
@@ -22,21 +23,15 @@ namespace ph_engine {
 		glm::vec2 texCoord;
 	};
 
-	struct TextureStruct {
-		unsigned int id;
-		std::string type;
-		aiString path;
-	};
-
 	typedef unsigned int uint;
 
 	class Mesh {
 		public:
 		vector<Vertex> vert;
 		vector<uint> ind;
-		vector<TextureStruct> tex;
+		vector<Texture> tex;
 
-		Mesh(vector<Vertex> v, vector<uint> i, vector<TextureStruct> t);
+		Mesh(vector<Vertex> v, vector<uint> i, vector<Texture> t);
 		void draw(ShaderProgram& program);
 
 		private:

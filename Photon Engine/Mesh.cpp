@@ -2,7 +2,7 @@
 
 #include "GLEW/glew.h"
 
-ph_engine::Mesh::Mesh(vector<Vertex> v, vector<uint> i, vector<TextureStruct> t) {
+ph_engine::Mesh::Mesh(vector<Vertex> v, vector<uint> i, vector<Texture> t) {
 	vert = v;
 	ind = i;
 	tex = t;
@@ -18,15 +18,25 @@ void ph_engine::Mesh::draw(ShaderProgram& program) {
 
 		//for lighting not using now...
 		stringstream ss;
-		string number, name = tex[i].type;
-		if (name == "texture_diffuse") ss << diffuse++;
-		else if (name == "texture_specular") ss << specular++;
+		string number;
+		TEXTURE_TYPE name = tex[i].getType();
+
+		switch (name){
+			case ph_engine::DIFFUSE:
+				ss << diffuse++;
+				break;
+			case ph_engine::SPECULAR:
+				ss << specular++;
+				break;
+			case ph_engine::DEFAULT:
+				break;
+		}
 		number = ss.str();
 
-		program.setFloat(("material." + name + number).c_str(), i);
-		glBindTexture(GL_TEXTURE_2D, tex[i].id);
+		//program.setFloat(("material." + name + number).c_str(), i);
+		tex[i].bind();
 	}
-	glActiveTexture(GL_TEXTURE0);
+	Texture::activeTexture(0);
 
 	vao->bind();
 	glDrawElements(GL_TRIANGLES, ind.size(), GL_UNSIGNED_INT, 0);

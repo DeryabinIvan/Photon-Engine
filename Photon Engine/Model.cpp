@@ -26,6 +26,13 @@ namespace ph_engine {
 
 		dir = path.substr(0, path.find_last_of('/'));
 		processNode(scene->mRootNode, scene);
+
+#ifdef _DEBUG
+		std::cout << "Loaded textures:" << std::endl;
+		for (unsigned int j = 0; j < textures_loaded.size(); j++) {
+			std::cout << textures_loaded[j] << std::endl;
+		}
+#endif
 	}
 
 	void Model::scale(float sx, float sy, float sz){
@@ -60,7 +67,7 @@ namespace ph_engine {
 	Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 		vector<Vertex> verticies;
 		vector<uint> indices;
-		vector<TextureStruct> textures;
+		vector<Texture> textures;
 
 		for (uint i = 0; i < mesh->mNumVertices; i++) {
 			Vertex vertex;
@@ -96,68 +103,41 @@ namespace ph_engine {
 
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-			vector<TextureStruct> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+			vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-			vector<TextureStruct> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+			vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		}
 
 		return Mesh(verticies, indices, textures);
 	}
 
-	vector<TextureStruct> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName) {
-		vector<TextureStruct> textures;
+	vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName) {
+		vector<Texture> textures;
+		
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
-			aiString str;
-			mat->GetTexture(type, i, &str);
+			
+			aiString path;
+			mat->GetTexture(type, i, &path);
 			bool skip = false;
+
 			for (unsigned int j = 0; j < textures_loaded.size(); j++) {
-				if (std::strcmp(textures_loaded[j].path.C_Str(), str.C_Str()) == 0) {
-					textures.push_back(textures_loaded[j]);
+				if (std::strcmp(textures_loaded[j].c_str(), path.C_Str()) == 0) {
 					skip = true;
 					break;
 				}
 			}
-			if (!skip) {   // если текстура не была загружена – сделаем это
-				TextureStruct texture;
-				texture.id = TextureFromFile(str.C_Str(), dir);
-				texture.type = typeName;
-				texture.path = str;
+			// если текстура не была загружена
+			if (!skip) {
+				Texture texture;
+				string filename = dir + '/' + path.C_Str();
+
+				texture.loadFromFile(filename.c_str(), TEXTURE_TYPE(type));
 				textures.push_back(texture);
 				// занесем текстуру в список уже загруженных
-				textures_loaded.push_back(texture);
+				textures_loaded.push_back(path.C_Str());
 			}
 		}
 		return textures;
-	}
-
-	unsigned int TextureFromFile(const char* path, const string& directory, bool gamma) {
-		string filename = string(path);
-		filename = directory + '/' + filename;
-
-		unsigned int textureID;
-		glGenTextures(1, &textureID);
-
-		int width, height, nrComponents;
-		unsigned char *data = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
-		if (data) {
-			GLenum format = GL_RGBA;
-
-			glBindTexture(GL_TEXTURE_2D, textureID);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			SOIL_free_image_data(data);
-		} else {
-			std::cout << "Texture failed to load at path: " << path << std::endl;
-			SOIL_free_image_data(data);
-		}
-
-		return textureID;
 	}
 }

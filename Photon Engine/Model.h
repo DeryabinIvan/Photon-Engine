@@ -16,8 +16,6 @@ using std::vector;
 using std::string;
 
 namespace ph_engine {
-	unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
-
 	class PHOTONENGINE_API Model {
 		public:
 			Model();
@@ -31,12 +29,12 @@ namespace ph_engine {
 			const glm::mat4 getModelMatrix();
 		private:
 			vector<Mesh> meshes;
-			vector<TextureStruct> textures_loaded;
+			vector<string> textures_loaded;
 			string dir;
 			glm::mat4 model;
 
 			void processNode(aiNode* node, const aiScene* scene);
 			Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-			vector<TextureStruct> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
+			vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 	};
 }

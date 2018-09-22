@@ -23,6 +23,9 @@ namespace ph_engine {
 		SOIL_free_image_data(image);
 		unbind();
 	}
+	void Texture::loadFromFile(const char* path, TEXTURE_TYPE type) {
+		loadFromFile(path, TEXTURE_LOAD_TYPE::RGB);
+	}
 
 	void Texture::activeTexture(uint num) {
 		if (num >= 0 && num <= 31) {

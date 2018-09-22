@@ -63,6 +63,5 @@ int main() {
 
 		window.swapBuffer();
 	}
-
 	return EXIT_SUCCESS;
 }
