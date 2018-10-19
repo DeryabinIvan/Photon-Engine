@@ -28,9 +28,6 @@ namespace ph_engine {
 
 			~Window();
 
-			void customOpenGLInit(InitFunction fun);
-			void customClearFunction(ClearFunction fun);
-
 			void setActive();
 			void swapBuffer();
 			void clear();

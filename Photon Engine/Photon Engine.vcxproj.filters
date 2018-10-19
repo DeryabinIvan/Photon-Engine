@@ -90,6 +90,12 @@
     <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Photon Engine.cpp">
@@ -138,6 +144,12 @@
       <Filter>Source Files\low-level</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
       <Filter>Source Files\high-level</Filter>
     </ClCompile>
   </ItemGroup>

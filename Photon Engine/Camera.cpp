@@ -4,19 +4,21 @@
 
 namespace ph_engine {
 	Camera::Camera() {
-		up = glm::vec3(0, 1, 0);
 		front = glm::vec3(0, 0, -1);
 	}
 	Camera::Camera(glm::vec3 position) {
 		this->position = position;
 
-		up = glm::vec3(0, 1, 0);
 		front = glm::vec3(0, 0, -1);
+	}
+	Camera::Camera(glm::vec3 position, glm::vec3 target) {
+		this->position = position;
+
+		front = target - position;
 	}
 	Camera::Camera(float x, float y, float z) {
 		position = glm::vec3(x, y, z);
 
-		up = glm::vec3(0, 1, 0);
 		front = glm::vec3(0, 0, -1);
 	}
 

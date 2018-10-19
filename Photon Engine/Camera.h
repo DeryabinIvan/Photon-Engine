@@ -7,11 +7,12 @@
 namespace ph_engine {
 	class PHOTONENGINE_API Camera {
 		protected:
-		glm::vec3 position, front, up;
+		glm::vec3 position, front, up = glm::vec3(0, 1, 0);
 
 		public:
 		Camera();
 		Camera(glm::vec3 position);
+		Camera(glm::vec3 position, glm::vec3 target);
 		Camera(float x, float y, float z);
 
 		void setPosition(glm::vec3 position);

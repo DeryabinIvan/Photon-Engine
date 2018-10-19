@@ -10,6 +10,10 @@ namespace ph_engine {
 		model = glm::mat4(1.f);
 	}
 
+	Model::~Model(){
+		//todo AssImp unload
+	}
+
 	void Model::draw(ShaderProgram& program) {
 		for (uint i = 0; i < meshes.size(); i++)
 			meshes[i].draw(program);
@@ -17,7 +21,7 @@ namespace ph_engine {
 
 	void Model::load(string path) {
 		Assimp::Importer import;
-		const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+		const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
 
 		if (!scene || scene->mFlags&AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 			std::cerr << "Model load error: " << import.GetErrorString() << std::endl;
@@ -127,14 +131,14 @@ namespace ph_engine {
 					break;
 				}
 			}
-			// если текстура не была загружена
+			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if (!skip) {
 				Texture texture;
 				string filename = dir + '/' + path.C_Str();
 
 				texture.loadFromFile(filename.c_str(), TEXTURE_TYPE(type));
 				textures.push_back(texture);
-				// занесем текстуру в список уже загруженных
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				textures_loaded.push_back(path.C_Str());
 			}
 		}

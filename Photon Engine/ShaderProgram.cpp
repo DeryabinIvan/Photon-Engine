@@ -7,7 +7,11 @@
 #include "GLM/mat3x3.hpp"
 #include "GLM/mat4x4.hpp"
 
+#ifdef _DEBUG
 #include <iostream>
+using std::cerr;
+using std::endl;
+#endif
 
 namespace ph_engine {
 	ShaderProgram::ShaderProgram() {
@@ -22,11 +26,14 @@ namespace ph_engine {
 
 		GLint result;
 		glGetProgramiv(objectID, GL_COMPILE_STATUS, &result);
+
 		if (!result) {
+#ifdef _DEBUG
 			GLchar errorLog[512];
 			glGetProgramInfoLog(objectID, 512, nullptr, errorLog);
 
 			std::cerr << "Compile shader error:\n" << errorLog << std::endl;
+#endif
 			return false;
 		}
 		return true;
@@ -39,7 +46,7 @@ namespace ph_engine {
 	void ShaderProgram::use() {
 		glUseProgram(objectID);
 	}
-	bool ShaderProgram::isUniformExist(const std::string& name) {
+	bool ShaderProgram::isUniformExist(const std::string& name) const {
 		return (glGetUniformLocation(objectID, name.c_str()) != -1);
 	}
 

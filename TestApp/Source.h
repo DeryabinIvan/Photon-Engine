@@ -11,6 +11,8 @@ using namespace std;
 #include "ShaderProgram.h"
 #include "Texture.h"
 #include "Model.h"
+#include "Color.h"
+#include "Light.h"
 
 #include "System.h"
 #include "Window.h"

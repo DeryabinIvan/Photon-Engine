@@ -47,6 +47,7 @@ namespace ph_engine {
 		if (pitch > 89.0f) pitch = 89.0f;
 		if (pitch < -89.0f) pitch = -89.0f;
 
+
 		front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
 		front.y = sin(glm::radians(pitch));
 		front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));

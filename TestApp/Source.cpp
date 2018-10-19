@@ -1,7 +1,5 @@
 ﻿#include "Source.h"
 
-const double c_1TO60 = 1.0 / 60.0;
-
 using namespace ph_engine;
 
 int main() {
@@ -28,40 +26,73 @@ int main() {
 	program.link();
 	vert.remove();
 	frag.remove();
-
-	Model testModel;
-	testModel.load("res/model/pumpkin/pumpkin.fbx");
-	testModel.translate(0, 0, 2);
-	testModel.scale(1.f/256.f);
-
-	Player player(0, 0, 3, 0.005f);
+	
 	window.hideCursor();
+
+	Player player(glm::vec3(0, 1, -2), 0.005f);
+	Camera camera(glm::vec3(0, 1, -2), glm::vec3(0, 0, -3));
+
+	bool isFreeCam = false;
+
+	const glm::mat4 projection = glm::perspective(glm::radians(45.f), (float)width / (float)height, 0.1f, 100.f);
+
+	glm::vec3 lightPos(0, 0, 0);
+	Color color(1, 1, 1);
+	Light light(lightPos, glm::vec3(1), color, Light::DIRECTION);
+
+	light.setAmbient(0.0001);
+	light.setDiffuse(1);
+	light.setSpecular(0.0001);
+
+	Model pumpkin;
+	pumpkin.load("res/model/pumpkin/pumpkin.fbx");
+	pumpkin.translate(0, 0, -3);
+	pumpkin.scale(1.f / 256.f);
 
 	while (!window.shouldClose()) {
 		window.pollEvents();
 
 		switch (keyboard.getPressedKey()) {
 			case Keyboard::KEY_ESCAPE:
-			window.close();
-			break;
+				window.close();
+				break;
+
+			case Keyboard::KEY_2:
+				isFreeCam = true;
+				break;
+
+			case Keyboard::KEY_1:
+				isFreeCam = false;
+				break;
 		}
-		
-		player.move(keyboard);
-		player.look(mouse);
+
+		if (isFreeCam) {
+			player.move(keyboard);
+			player.look(mouse);
+		}
 
 		window.clear();
 
 		program.use();
-		glm::mat4 projection = glm::perspective(glm::radians(45.f), (float)width / (float)height, 0.1f, 100.f);
 		
-		program.setMat4("model", testModel.getModelMatrix());
-		program.setMat4("view", player.getViewMatrix());
-		program.setMat4("projection", projection);
-
 		//draw here
-		testModel.draw(program);
+		light.getPosition().x = glm::sin(System::getTime()) * 4;
+		light.getPosition().z = glm::cos(System::getTime()) * 4;
+		light.sendInShader(program, "light");
+		
+		if (isFreeCam) {
+			program.setMat4("view", player.getViewMatrix());
+			program.setVec3("viewPos", player.getPosition());
+		} else {
+			program.setMat4("view", camera.getViewMatrix());
+			program.setVec3("viewPos", camera.getPosition());
+		}
+		program.setMat4("projection", projection);
+		program.setMat4("model", pumpkin.getModelMatrix());
+		pumpkin.draw(program);
 
 		window.swapBuffer();
 	}
+
 	return EXIT_SUCCESS;
 }

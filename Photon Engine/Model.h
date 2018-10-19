@@ -19,6 +19,7 @@ namespace ph_engine {
 	class PHOTONENGINE_API Model {
 		public:
 			Model();
+			~Model();
 			void draw(ShaderProgram& program);
 			void load(string path);
 

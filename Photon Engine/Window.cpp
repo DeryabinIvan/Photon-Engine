@@ -1,7 +1,5 @@
 #include "Window.h"
 
-
-
 int ph_engine::Window::WINDOWS_COUNT = 0;
 
 void ph_engine::Window::resize(GLFWwindow * id, int w, int h) {
@@ -53,14 +51,6 @@ ph_engine::Window::Window(int w, int h, const char* title, WindowSettings& s) {
 ph_engine::Window::~Window() {
 	WINDOWS_COUNT--;
 	glfwDestroyWindow(id);
-}
-
-void ph_engine::Window::customOpenGLInit(InitFunction fun) {
-	fun();
-}
-
-void ph_engine::Window::customClearFunction(ClearFunction fun) {
-	custom = fun;
 }
 
 void ph_engine::Window::setActive() {
