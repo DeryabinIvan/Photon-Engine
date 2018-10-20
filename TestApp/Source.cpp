@@ -37,12 +37,26 @@ int main() {
 	const glm::mat4 projection = glm::perspective(glm::radians(45.f), (float)width / (float)height, 0.1f, 100.f);
 
 	glm::vec3 lightPos(0, 0, 0);
-	Color color(1, 1, 1);
-	Light light(lightPos, glm::vec3(1), color, Light::DIRECTION);
+	Color red(1, 0, 0), green(0, 1, 0), blue(0, 0, 1), white(1, 1, 1);
+	Light dirL, dotL, spotL;
 
-	light.setAmbient(0.0001);
-	light.setDiffuse(1);
-	light.setSpecular(0.0001);
+	dirL.makeDirected(glm::vec3(1, 0, 0), green);
+	dirL.setAmbient(0.1);
+	dirL.setDiffuse(0.01);
+	dirL.setSpecular(0);
+
+	dotL.makeDot(lightPos, red);
+	dotL.setAmbient(0.1);
+	dotL.setDiffuse(0.01);
+	dotL.setSpecular(0);
+
+	spotL.makeSpot(player.getPosition(), camera.getFrontVec(), 2, 10, white);
+	spotL.setAmbient(0.1);
+	spotL.setDiffuse(0.01);
+	spotL.setSpecular(0);
+
+	dotL.setAttenuation(0.032, 0.09, 1);
+	spotL.setAttenuation(0.032, 0.09, 1);
 
 	Model pumpkin;
 	pumpkin.load("res/model/pumpkin/pumpkin.fbx");
@@ -76,16 +90,23 @@ int main() {
 		program.use();
 		
 		//draw here
-		light.getPosition().x = glm::sin(System::getTime()) * 4;
-		light.getPosition().z = glm::cos(System::getTime()) * 4;
-		light.sendInShader(program, "light");
+		dotL.getPosition().x = glm::sin(System::getTime()) * 4;
+		dotL.getPosition().z = -3 + glm::cos(System::getTime()) * 4;
+
+		dotL.sendInShader(program, "l1");
+		dirL.sendInShader(program, "l2");
+		spotL.sendInShader(program, "l3");
 		
 		if (isFreeCam) {
 			program.setMat4("view", player.getViewMatrix());
 			program.setVec3("viewPos", player.getPosition());
+			spotL.setPosition(player.getPosition());
+			spotL.setDirection(player.getFrontVec());
 		} else {
 			program.setMat4("view", camera.getViewMatrix());
 			program.setVec3("viewPos", camera.getPosition());
+			spotL.setPosition(camera.getPosition());
+			spotL.setDirection(camera.getFrontVec());
 		}
 		program.setMat4("projection", projection);
 		program.setMat4("model", pumpkin.getModelMatrix());

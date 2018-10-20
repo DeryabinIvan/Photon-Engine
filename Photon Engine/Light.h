@@ -17,11 +17,15 @@ namespace ph_engine {
 		Color color;
 
 		vec3 ambient, diffuse, specular;
+		float cutOff, outCutOff;
 		int lightType;
 
-		public:
-			enum { DOT, DIRECTION, SPOT };
+		float quadratic, linear, constant;
 
+		public:
+			enum { DOT, DIRECTED, SPOT };
+
+			Light() = default;
 			Light(vec3 position, vec3 direction, Color& color, int lightType);
 			
 			void setAmbient(float a);
@@ -32,9 +36,15 @@ namespace ph_engine {
 			void setDiffuse(Color& d);
 			void setSpecular(Color& s);
 
+			void makeDot(vec3 position, Color& color);
+			void makeDirected(vec3 direction, Color& color);
+			void makeSpot(vec3 position, vec3 direction, float phi, float outPhi, Color& color);
+
 			void sendInShader(ShaderProgram& program, const std::string name);
 			
 			void setPosition(vec3 position);
+			void setDirection(vec3 direction);
+			void setAttenuation(float quadratic, float linear, float constant);
 			vec4& getPosition();
 	};
 }
