@@ -1,5 +1,9 @@
 # About
-This is simple OpenGL-based game engine, written on C++. Now it`s only a OpenGL wrap.
+This is simple OpenGL-based game engine, written on C++.
+# Features
+- Model loading
+- Phong-based lighting
+- Shaders and shader programs (atually this is OpenGL feature)
 # Disclamer
 - May contains bugs
 - My English :)
@@ -12,3 +16,6 @@ This is simple OpenGL-based game engine, written on C++. Now it`s only a OpenGL 
 # Requirements
 - OpenGL 3.3+
 - Windows x64 (in future will be cross-platform)
+# Thanks
+- [Joey de Vries OpenGL guides](https://learnopengl.com)
+- [Guys who translate Joey de Vries`s guides into my language](https://habr.com/search/?target_type=posts&q=learnopengl&order_by=date "Habr.com link")
