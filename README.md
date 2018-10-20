@@ -2,7 +2,7 @@
 This is simple OpenGL-based game engine, written on C++.
 # Features
 - Model loading
-- Phong-based lighting
+- Phong-based lighting (dot, directed and spot light`s with many settings)
 - Shaders and shader programs (atually this is OpenGL feature)
 # Disclamer
 - May contains bugs
