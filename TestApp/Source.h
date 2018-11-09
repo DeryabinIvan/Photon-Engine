@@ -11,8 +11,14 @@ using namespace std;
 #include "ShaderProgram.h"
 #include "Texture.h"
 #include "Model.h"
+
+#include "FrameBuffer.h"
+#include "RenderBuffer.h"
+#include "LowLevelAPI.h"
+
 #include "Color.h"
 #include "Light.h"
+#include "PhongMaterial.h"
 
 #include "System.h"
 #include "Window.h"

@@ -23,6 +23,8 @@ namespace ph_engine {
 		static int WINDOWS_COUNT;
 
 		public:
+			enum Render_Mode { TRIANGLES = GL_TRIANGLES, POINTS = GL_POINTS };
+
 			Window(int w, int h, const char* title);
 			Window(int w, int h, const char* title, WindowSettings& s);
 
@@ -31,6 +33,9 @@ namespace ph_engine {
 			void setActive();
 			void swapBuffer();
 			void clear();
+			void draw(Render_Mode mode, uint first, uint count);
+			void enableFeature(uint glFeature);
+			void disableFeature(uint glFeature);
 
 			bool shouldClose();
 			void close();

@@ -16,8 +16,8 @@ int main() {
 	mouse.setSensitivity(.5f);
 
 	Shader vert, frag;
-	vert.loadFromFile("res/shader/vertex.glsl", SHADER_TYPE::VERTEX);
-	frag.loadFromFile("res/shader/fragment.glsl", SHADER_TYPE::FRAGMENT);
+	vert.loadFromFile("res/shader/vertex.glsl", Shader::VERTEX);
+	frag.loadFromFile("res/shader/fragment.glsl", Shader::FRAGMENT);
 
 	ShaderProgram program;
 	program.addShader(vert);
@@ -38,30 +38,76 @@ int main() {
 
 	glm::vec3 lightPos(0, 0, 0);
 	Color red(1, 0, 0), green(0, 1, 0), blue(0, 0, 1), white(1, 1, 1);
-	Light dirL, dotL, spotL;
+	Light dotL;
 
-	dirL.makeDirected(glm::vec3(1, 0, 0), green);
-	dirL.setAmbient(0.1);
-	dirL.setDiffuse(0.01);
-	dirL.setSpecular(0);
-
-	dotL.makeDot(lightPos, red);
-	dotL.setAmbient(0.1);
-	dotL.setDiffuse(0.01);
-	dotL.setSpecular(0);
-
-	spotL.makeSpot(player.getPosition(), camera.getFrontVec(), 2, 10, white);
-	spotL.setAmbient(0.1);
-	spotL.setDiffuse(0.01);
-	spotL.setSpecular(0);
-
+	dotL.makeDot(lightPos, white);
+	dotL.setAmbient(0.2);
+	dotL.setDiffuse(0.5);
+	dotL.setSpecular(1);
 	dotL.setAttenuation(0.032, 0.09, 1);
-	spotL.setAttenuation(0.032, 0.09, 1);
 
-	Model pumpkin;
-	pumpkin.load("res/model/pumpkin/pumpkin.fbx");
-	pumpkin.translate(0, 0, -3);
-	pumpkin.scale(1.f / 256.f);
+	const std::string path = "res/model/";
+
+	Model model;
+
+	model.load(path + "cube/cube.fbx");
+	model.translate(0, 0, -3);
+	model.scale(1.f / 2.f);
+
+	PhongMaterial material;
+	material.loadDiffuse("res/model/cube/container.jpg", 0);
+	material.loadSpecular("res/model/cube/container2_specular.png", 1);
+	material.setShininess(2);
+
+	FrameBuffer framebuffer;
+	RenderBuffer renderbuffer;
+
+	framebuffer.bind();
+		framebuffer.attachTexture(width, height, FrameBuffer::COLOR);
+		renderbuffer.bind();
+			renderbuffer.create(width, height);
+			framebuffer.attachRenderBuffer(renderbuffer);
+		renderbuffer.bindBaseBuffer();
+	framebuffer.bindBaseBuffer();
+	if (framebuffer.checkErrors()) {
+		cerr << "FRAMEBUFFER NOT COMPLETE" << endl;
+	}
+
+	Shader fragScreen, vertScreen;
+	fragScreen.loadFromFile("res/shaders/framebuffer_fs.glsl", Shader::FRAGMENT);
+	vertScreen.loadFromFile("res/shaders/framebuffer_vs.glsl", Shader::VERTEX);
+
+	ShaderProgram screenProg;
+	screenProg.addShader(fragScreen);
+	screenProg.addShader(vertScreen);
+
+	screenProg.link();
+	fragScreen.remove();
+	vertScreen.remove();
+
+	float quadVertices[] = {
+		// positions   // texCoords
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		-1.0f, -1.0f,  0.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f, 1.0f
+	};
+	VAO quadVAO;
+	VBO quadVBO;
+	quadVAO.bind();
+		quadVBO.bind();
+			quadVBO.load(sizeof(quadVertices), &quadVertices);
+
+			quadVBO.enableAttrib(0);
+			quadVBO.addVertexAttrib(0, 2, false, 4, 0);
+
+			quadVBO.enableAttrib(1);
+			quadVBO.addVertexAttrib(1, 2, false, 4, (void*)(2 * sizeof(float)));
+		quadVBO.unbind();
+	quadVAO.unbind();
 
 	while (!window.shouldClose()) {
 		window.pollEvents();
@@ -84,7 +130,9 @@ int main() {
 			player.move(keyboard);
 			player.look(mouse);
 		}
-
+				
+		framebuffer.bind();
+		window.enableFeature(GL_DEPTH_TEST);
 		window.clear();
 
 		program.use();
@@ -93,24 +141,32 @@ int main() {
 		dotL.getPosition().x = glm::sin(System::getTime()) * 4;
 		dotL.getPosition().z = -3 + glm::cos(System::getTime()) * 4;
 
-		dotL.sendInShader(program, "l1");
-		dirL.sendInShader(program, "l2");
-		spotL.sendInShader(program, "l3");
+		dotL.sendInShader(program, "l");
+		material.sendInShader(program, "material");
+
+		material.activeDiffuse();
+		material.activeSpecular();
 		
 		if (isFreeCam) {
 			program.setMat4("view", player.getViewMatrix());
 			program.setVec3("viewPos", player.getPosition());
-			spotL.setPosition(player.getPosition());
-			spotL.setDirection(player.getFrontVec());
 		} else {
 			program.setMat4("view", camera.getViewMatrix());
 			program.setVec3("viewPos", camera.getPosition());
-			spotL.setPosition(camera.getPosition());
-			spotL.setDirection(camera.getFrontVec());
 		}
 		program.setMat4("projection", projection);
-		program.setMat4("model", pumpkin.getModelMatrix());
-		pumpkin.draw(program);
+		program.setMat4("model", model.getModelMatrix());
+		model.draw(program);
+
+		//framebuffer render
+		framebuffer.bindBaseBuffer();
+		window.disableFeature(GL_DEPTH_TEST);
+		window.clear();
+
+		screenProg.use();
+		quadVAO.bind();
+		framebuffer.bindTexture();
+		window.draw(Window::TRIANGLES, 0, 6);
 
 		window.swapBuffer();
 	}

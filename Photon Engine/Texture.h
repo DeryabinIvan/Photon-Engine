@@ -4,24 +4,25 @@
 #include "GLObject.h"
 
 namespace ph_engine {
-	enum TEXTURE_LOAD_TYPE { RGB, RGBA };
-	enum TEXTURE_TYPE {DIFFUSE=1, SPECULAR, DEFAULT};
-
 	class PHOTONENGINE_API Texture:public GLObject {
-		int width, heigth;
-		TEXTURE_TYPE type;
-
 		public:
-		Texture();
-		// Load texture from file
-		void loadFromFile(const char* path, TEXTURE_LOAD_TYPE type = RGB);
-		void loadFromFile(const char* path, TEXTURE_TYPE type = DEFAULT);
+			enum TEXTURE_LOAD_TYPE { RGB, RGBA };
+			enum TEXTURE_TYPE { DIFFUSE = 1, SPECULAR, DEFAULT };
 
-		static void activeTexture(uint);
-		TEXTURE_TYPE getType() { return type; }
+			Texture();
+			// Load texture from file
+			void loadFromFile(const char* path, TEXTURE_LOAD_TYPE type = RGB);
+			void loadFromFile(const char* path, TEXTURE_TYPE type = DEFAULT);
 
-		// Inherited via GLObject
-		void bind();
-		void unbind();
+			static void activeTexture(uint);
+			TEXTURE_TYPE getType() { return type; }
+
+			void bind();
+			static void bind(uint id);
+			void unbind();
+
+		private:
+			int width, heigth;
+			TEXTURE_TYPE type;
 	};
 }

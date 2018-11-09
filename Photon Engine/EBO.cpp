@@ -8,17 +8,17 @@ namespace ph_engine {
 		glGenBuffers(1, &objectID);
 	}
 
-	void EBO::load(size_t size, const void * data, DRAW_TYPE type) {
+	void EBO::load(size_t size, const void * data, VBO::DRAW_TYPE type) {
 		switch (type) {
-			case STATIC:
-			glBufferData(target, size, data, GL_STATIC_DRAW);
-			break;
-			case DYNAMIC:
-			glBufferData(target, size, data, GL_DYNAMIC_DRAW);
-			break;
-			case STREAM:
-			glBufferData(target, size, data, GL_STREAM_DRAW);
-			break;
+			case VBO::STATIC:
+				glBufferData(target, size, data, GL_STATIC_DRAW);
+				break;
+			case VBO::DYNAMIC:
+				glBufferData(target, size, data, GL_DYNAMIC_DRAW);
+				break;
+			case VBO::STREAM:
+				glBufferData(target, size, data, GL_STREAM_DRAW);
+				break;
 		}
 	}
 

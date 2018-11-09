@@ -25,6 +25,7 @@ namespace ph_engine {
 	}
 	void Texture::loadFromFile(const char* path, TEXTURE_TYPE type) {
 		loadFromFile(path, TEXTURE_LOAD_TYPE::RGB);
+		this->type = type;
 	}
 
 	void Texture::activeTexture(uint num) {
@@ -35,6 +36,9 @@ namespace ph_engine {
 
 	void Texture::bind() {
 		glBindTexture(target, objectID);
+	}
+	void Texture::bind(uint id){
+		glBindTexture(GL_TEXTURE_2D, id);
 	}
 	void Texture::unbind() {
 		glBindTexture(target, 0);

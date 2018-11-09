@@ -2,7 +2,7 @@
 #include "Config.h"
 
 #include "Color.h"
-#include "ShaderProgram.h"
+#include "Shader IO.h"
 
 #include "GLM/vec3.hpp"
 #include "GLM/vec4.hpp"
@@ -11,7 +11,7 @@ namespace ph_engine {
 	using glm::vec3;
 	using glm::vec4;
 
-	class PHOTONENGINE_API Light{
+	class PHOTONENGINE_API Light:ShaderIO{
 		vec4 position;
 		vec3 direction;
 		Color color;

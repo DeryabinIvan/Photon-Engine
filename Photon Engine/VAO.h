@@ -5,17 +5,17 @@
 
 namespace ph_engine {
 	//VAO save VBO sates
-	class PHOTONENGINE_API VAO:public GLObject {
+	class PHOTONENGINE_API VAO:GLObject {
 		public:
-		VAO();
-		~VAO();
+			VAO();
+			~VAO();
 
-		void remove() {
-			this->~VAO();
-		}
+			void remove() {
+				this->~VAO();
+			}
 
-		// Inherited via GLObject
-		void bind();
-		void unbind();
+			// Inherited via GLObject
+			void bind();
+			void unbind();
 	};
 }

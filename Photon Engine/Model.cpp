@@ -69,12 +69,12 @@ namespace ph_engine {
 	}
 
 	Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
-		vector<Vertex> verticies;
+		vector<Mesh::Vertex> verticies;
 		vector<uint> indices;
 		vector<Texture> textures;
 
 		for (uint i = 0; i < mesh->mNumVertices; i++) {
-			Vertex vertex;
+			Mesh::Vertex vertex;
 			
 			glm::vec3 tmp;
 			tmp.x = mesh->mVertices[i].x;
@@ -136,7 +136,7 @@ namespace ph_engine {
 				Texture texture;
 				string filename = dir + '/' + path.C_Str();
 
-				texture.loadFromFile(filename.c_str(), TEXTURE_TYPE(type));
+				texture.loadFromFile(filename.c_str(), Texture::TEXTURE_TYPE(type));
 				textures.push_back(texture);
 				// ������� �������� � ������ ��� �����������
 				textures_loaded.push_back(path.C_Str());

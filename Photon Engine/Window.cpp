@@ -67,6 +67,18 @@ void ph_engine::Window::clear() {
 	} else custom();
 }
 
+void ph_engine::Window::draw(Render_Mode mode, uint first, uint count){
+	glDrawArrays(mode, first, count);
+}
+
+void ph_engine::Window::enableFeature(uint glFeature){
+	glEnable(glFeature);
+}
+
+void ph_engine::Window::disableFeature(uint glFeature){
+	glDisable(glFeature);
+}
+
 bool ph_engine::Window::shouldClose() {
 	return glfwWindowShouldClose(id);
 }

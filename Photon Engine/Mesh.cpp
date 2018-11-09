@@ -11,29 +11,21 @@ ph_engine::Mesh::Mesh(vector<Vertex> v, vector<uint> i, vector<Texture> t) {
 }
 
 void ph_engine::Mesh::draw(ShaderProgram& program) {
-	uint diffuse = 1, specular = 1;
-
 	for (uint i = 0; i < tex.size(); i++) {
-		glActiveTexture(GL_TEXTURE0 + i);
+		Texture::activeTexture(i);
 
 		//for lighting not using now...
-		stringstream ss;
-		string number;
-		TEXTURE_TYPE name = tex[i].getType();
+		Texture::TEXTURE_TYPE name = tex[i].getType();
 
 		switch (name){
-			case ph_engine::DIFFUSE:
-				ss << diffuse++;
+			case Texture::DIFFUSE:
+				program.setInt("material.diffuse", i);
 				break;
-			case ph_engine::SPECULAR:
-				ss << specular++;
-				break;
-			case ph_engine::DEFAULT:
+			case Texture::SPECULAR:
+				program.setInt("material.specular", i);
 				break;
 		}
-		number = ss.str();
-
-		//program.setFloat(("material." + name + number).c_str(), i);
+		
 		tex[i].bind();
 	}
 	Texture::activeTexture(0);
@@ -61,12 +53,13 @@ void ph_engine::Mesh::setup() {
 
 	//normals
 	vbo->enableAttrib(1);
-	vbo->addVertexAttrib(1, 3, GL_FALSE, sizeof(Vertex), (void*) offsetof(Vertex, normal));
+	vbo->addVertexAttrib(1, 3, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 
 	//texture coordinates
 	vbo->enableAttrib(2);
-	vbo->addVertexAttrib(2, 2, GL_FALSE, sizeof(Vertex), (void*) offsetof(Vertex, texCoord));
+	vbo->addVertexAttrib(2, 2, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
 
 	vao->unbind();
+
 	ebo->unbind();
 }
