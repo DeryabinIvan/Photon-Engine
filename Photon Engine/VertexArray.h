@@ -4,14 +4,14 @@
 #include "GLObject.h"
 
 namespace ph_engine {
-	//VAO save VBO sates
-	class PHOTONENGINE_API VAO:GLObject {
+	//VertexArray save VertexBuffer sates
+	class PHOTONENGINE_API VertexArray:GLObject {
 		public:
-			VAO();
-			~VAO();
+			VertexArray();
+			~VertexArray();
 
 			void remove() {
-				this->~VAO();
+				this->~VertexArray();
 			}
 
 			// Inherited via GLObject

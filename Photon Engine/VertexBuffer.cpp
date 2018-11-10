@@ -1,18 +1,18 @@
-#include "VBO.h"
+#include "VertexBuffer.h"
 
 #include "GLEW/glew.h"
 
 namespace ph_engine {
-	VBO::VBO() {
+	VertexBuffer::VertexBuffer() {
 		target = GL_ARRAY_BUFFER;
 
 		glGenBuffers(1, &objectID);
 	}
-	VBO::~VBO() {
+	VertexBuffer::~VertexBuffer() {
 		glDeleteVertexArrays(1, &objectID);
 	}
 
-	void VBO::load(size_t size, const void * data, DRAW_TYPE type) {
+	void VertexBuffer::load(size_t size, const void * data, DRAW_TYPE type) {
 		switch (type) {
 			case STATIC:
 			glBufferData(target, size, data, GL_STATIC_DRAW);
@@ -26,18 +26,18 @@ namespace ph_engine {
 		}
 	}
 
-	void VBO::addVertexAttrib(uint index, uint size, bool normalized, int stride, const void* offset) {
+	void VertexBuffer::addVertexAttrib(uint index, uint size, bool normalized, int stride, const void* offset) {
 		glVertexAttribPointer(index, size, GL_FLOAT, normalized, stride, offset);
 	}
 
-	void VBO::enableAttrib(uint index) { glEnableVertexAttribArray(index); }
-	void VBO::disableAttrib(uint index) { glDisableVertexAttribArray(index); }
+	void VertexBuffer::enableAttrib(uint index) { glEnableVertexAttribArray(index); }
+	void VertexBuffer::disableAttrib(uint index) { glDisableVertexAttribArray(index); }
 
-	void VBO::bind() {
+	void VertexBuffer::bind() {
 		glBindBuffer(target, objectID);
 	}
 
-	void VBO::unbind() {
+	void VertexBuffer::unbind() {
 		glBindBuffer(target, 0);
 	}
 }

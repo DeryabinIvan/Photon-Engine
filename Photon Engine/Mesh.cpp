@@ -36,9 +36,9 @@ void ph_engine::Mesh::draw(ShaderProgram& program) {
 }
 
 void ph_engine::Mesh::setup() {
-	vbo = new VBO();
-	vao = new VAO();
-	ebo = new EBO();
+	vbo = new VertexBuffer();
+	vao = new VertexArray();
+	ebo = new ElementBuffer();
 
 	vao->bind();
 	vbo->bind();

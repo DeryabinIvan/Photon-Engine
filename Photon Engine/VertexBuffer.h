@@ -4,18 +4,17 @@
 #include "GLObject.h"
 
 namespace ph_engine {
-	class PHOTONENGINE_API VBO:GLObject {
+	class PHOTONENGINE_API VertexBuffer:GLObject {
 		public:
 			enum DRAW_TYPE { STATIC, DYNAMIC, STREAM };
 
-			VBO();
-			~VBO();
+			VertexBuffer();
+			~VertexBuffer();
 
 			void load(size_t size, const void* data, DRAW_TYPE type = STATIC);
 
-			void remove() { this->~VBO(); }
+			void remove() { this->~VertexBuffer(); }
 
-			//@param stribe is automaticle mul by sizeof(float)
 			void addVertexAttrib(uint index, uint size, bool normalized, int stride, const void* offset = (void*) 0);
 			//Enable attrib by index
 			void enableAttrib(uint index);

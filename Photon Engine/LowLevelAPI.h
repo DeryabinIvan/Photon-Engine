@@ -2,6 +2,6 @@
 
 #include "Config.h"
 
-#include "VAO.h"
-#include "VBO.h"
-#include "EBO.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+#include "ElementBuffer.h"

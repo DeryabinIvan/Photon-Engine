@@ -8,8 +8,6 @@ namespace ph_engine {
 	FrameBuffer::FrameBuffer(){
 		target = GL_FRAMEBUFFER;
 		glGenFramebuffers(1, &objectID);
-		if (!glIsFramebuffer(objectID))
-			std::cerr << "Created object isn`t FBO\n";
 	}
 	FrameBuffer::~FrameBuffer(){
 		remove();
@@ -47,8 +45,8 @@ namespace ph_engine {
 		}
 	}
 
-	void FrameBuffer::attachRenderBuffer(RenderBuffer rb){
-		glFramebufferRenderbuffer(target, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rb.getID());
+	void FrameBuffer::attachRenderBuffer(RenderBuffer rb, uint attachType){
+		glFramebufferRenderbuffer(target, attachType, GL_RENDERBUFFER, rb.getID());
 	}
 
 	bool FrameBuffer::checkErrors(){

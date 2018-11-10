@@ -15,7 +15,7 @@ namespace ph_engine {
 			~FrameBuffer();
 
 			void attachTexture(uint width, uint height, AttachmentType type, uint blockNum = 0);
-			void attachRenderBuffer(RenderBuffer rb);
+			void attachRenderBuffer(RenderBuffer rb, uint attachType);
 
 			//@return return true if framebuffer not complete
 			bool checkErrors();

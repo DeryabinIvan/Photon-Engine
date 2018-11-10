@@ -1,31 +1,31 @@
-#include "EBO.h"
+#include "ElementBuffer.h"
 
 #include "GLEW/glew.h"
 
 namespace ph_engine {
-	EBO::EBO() {
+	ElementBuffer::ElementBuffer() {
 		target = GL_ELEMENT_ARRAY_BUFFER;
 		glGenBuffers(1, &objectID);
 	}
 
-	void EBO::load(size_t size, const void * data, VBO::DRAW_TYPE type) {
+	void ElementBuffer::load(size_t size, const void * data, VertexBuffer::DRAW_TYPE type) {
 		switch (type) {
-			case VBO::STATIC:
+			case VertexBuffer::STATIC:
 				glBufferData(target, size, data, GL_STATIC_DRAW);
 				break;
-			case VBO::DYNAMIC:
+			case VertexBuffer::DYNAMIC:
 				glBufferData(target, size, data, GL_DYNAMIC_DRAW);
 				break;
-			case VBO::STREAM:
+			case VertexBuffer::STREAM:
 				glBufferData(target, size, data, GL_STREAM_DRAW);
 				break;
 		}
 	}
 
-	void EBO::bind() {
+	void ElementBuffer::bind() {
 		glBindBuffer(target, objectID);
 	}
-	void EBO::unbind() {
+	void ElementBuffer::unbind() {
 		glBindBuffer(target, 0);
 	}
 }

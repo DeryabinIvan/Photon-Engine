@@ -1,21 +1,21 @@
-#include "VAO.h"
+#include "VertexArray.h"
 
 #include "GLEW/glew.h"
 
 namespace ph_engine {
-	VAO::VAO() {
+	VertexArray::VertexArray() {
 		target = GL_ARRAY_BUFFER;
 
 		glGenVertexArrays(1, &objectID);
 	}
-	VAO::~VAO() {
+	VertexArray::~VertexArray() {
 		glDeleteBuffers(1, &objectID);
 	}
 
-	void VAO::bind() {
+	void VertexArray::bind() {
 		glBindVertexArray(objectID);
 	}
-	void VAO::unbind() {
+	void VertexArray::unbind() {
 		glBindVertexArray(0);
 	}
 }

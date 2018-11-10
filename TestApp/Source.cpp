@@ -37,7 +37,7 @@ int main() {
 	const glm::mat4 projection = glm::perspective(glm::radians(45.f), (float)width / (float)height, 0.1f, 100.f);
 
 	glm::vec3 lightPos(0, 0, 0);
-	Color red(1, 0, 0), green(0, 1, 0), blue(0, 0, 1), white(1, 1, 1);
+	Color red(1, 0, 0), green(0, 1, 0), blue(0, 0, 1), white(1, 1, 1), grey(.5, .5, .5);
 	Light dotL;
 
 	dotL.makeDot(lightPos, white);
@@ -54,46 +54,17 @@ int main() {
 	model.translate(0, 0, -3);
 	model.scale(1.f / 2.f);
 
-	PhongMaterial material;
-	material.loadDiffuse("res/model/cube/container.jpg", 0);
-	material.loadSpecular("res/model/cube/container2_specular.png", 1);
-	material.setShininess(2);
-
-	FrameBuffer framebuffer;
-	RenderBuffer renderbuffer;
-
-	renderbuffer.bind();
-	renderbuffer.create(width, height);
-	renderbuffer.bindBaseBuffer();
-
-	framebuffer.bind();
-	System::printGLError();
-
-	framebuffer.attachTexture(width, height, FrameBuffer::COLOR);
-	System::printGLError();
-
-	framebuffer.attachRenderBuffer(renderbuffer);
-	System::printGLError();
-
-	framebuffer.bindBaseBuffer();
-	System::printGLError();
-
-	if (framebuffer.checkErrors()) {
-		cerr << "FRAMEBUFFER NOT COMPLETE" << endl;
-		System::printGLError();
-	}
-
 	Shader fragScreen, vertScreen;
 	fragScreen.loadFromFile("res/shader/framebuffer_fs.glsl", Shader::FRAGMENT);
 	vertScreen.loadFromFile("res/shader/framebuffer_vs.glsl", Shader::VERTEX);
 
 	ShaderProgram screenProg;
-	screenProg.addShader(fragScreen);
 	screenProg.addShader(vertScreen);
+	screenProg.addShader(fragScreen);
 
 	screenProg.link();
-	fragScreen.remove();
 	vertScreen.remove();
+	fragScreen.remove();
 
 	float quadVertices[] = {
 		// positions   // texCoords
@@ -105,20 +76,37 @@ int main() {
 		 1.0f, -1.0f,  1.0f, 0.0f,
 		 1.0f,  1.0f,  1.0f, 1.0f
 	};
-	VAO quadVAO;
-	VBO quadVBO;
+	VertexArray quadVAO;
+	VertexBuffer quadVBO;
 	quadVAO.bind();
 		quadVBO.bind();
 			quadVBO.load(sizeof(quadVertices), &quadVertices);
 
 			quadVBO.enableAttrib(0);
-			quadVBO.addVertexAttrib(0, 2, false, 4, 0);
+			quadVBO.addVertexAttrib(0, 2, false, 4 * sizeof(float), (void*)0);
 
 			quadVBO.enableAttrib(1);
-			quadVBO.addVertexAttrib(1, 2, false, 4, (void*)(2 * sizeof(float)));
+			quadVBO.addVertexAttrib(1, 2, false, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 		quadVBO.unbind();
 	quadVAO.unbind();
 
+	FrameBuffer framebuffer;
+	RenderBuffer renderbuffer;
+
+	renderbuffer.bind();
+	renderbuffer.create(GL_DEPTH_COMPONENT, width, height);
+	renderbuffer.bindBaseBuffer();
+
+	framebuffer.bind();
+	framebuffer.attachTexture(width, height, FrameBuffer::COLOR);
+	framebuffer.attachRenderBuffer(renderbuffer, GL_DEPTH_ATTACHMENT);
+	if (framebuffer.checkErrors()) {
+		cerr << "FRAMEBUFFER NOT COMPLETE" << endl;
+		System::printGLError();
+	}
+	framebuffer.bindBaseBuffer();
+
+	//'Game' loop
 	while (!window.shouldClose()) {
 		window.pollEvents();
 
@@ -140,10 +128,12 @@ int main() {
 			player.move(keyboard);
 			player.look(mouse);
 		}
-				
+		
+		//framebuffer render
 		framebuffer.bind();
 		window.enableFeature(GL_DEPTH_TEST);
-		window.clear();
+		window.clearColor(grey);
+		window.clearBuffers(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		program.use();
 		
@@ -152,10 +142,6 @@ int main() {
 		dotL.getPosition().z = -3 + glm::cos(System::getTime()) * 4;
 
 		dotL.sendInShader(program, "l");
-		material.sendInShader(program, "material");
-
-		material.activeDiffuse();
-		material.activeSpecular();
 		
 		if (isFreeCam) {
 			program.setMat4("view", player.getViewMatrix());
@@ -168,10 +154,11 @@ int main() {
 		program.setMat4("model", model.getModelMatrix());
 		model.draw(program);
 
-		//framebuffer render
+		//screen render
 		framebuffer.bindBaseBuffer();
 		window.disableFeature(GL_DEPTH_TEST);
-		window.clear(white);
+		window.clearColor(grey);
+		window.clearBuffers(GL_COLOR_BUFFER_BIT);
 
 		screenProg.use();
 		quadVAO.bind();

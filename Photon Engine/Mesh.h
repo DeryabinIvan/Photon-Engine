@@ -4,9 +4,9 @@
 #include <vector>
 #include <sstream>
 
-#include "VAO.h"
-#include "VBO.h"
-#include "EBO.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+#include "ElementBuffer.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
 
@@ -33,9 +33,9 @@ namespace ph_engine {
 			void draw(ShaderProgram& program);
 
 		private:
-			VAO* vao;
-			VBO* vbo;
-			EBO* ebo;
+			VertexArray* vao;
+			VertexBuffer* vbo;
+			ElementBuffer* ebo;
 
 			void setup();
 	};

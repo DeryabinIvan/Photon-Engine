@@ -20,7 +20,6 @@ namespace ph_engine {
 		int width, heigth;
 
 		void resize(GLFWwindow*, int, int);
-		ClearFunction custom = nullptr;
 
 		static int WINDOWS_COUNT;
 
@@ -34,8 +33,12 @@ namespace ph_engine {
 
 			void setActive();
 			void swapBuffer();
+
+			//default clear funtion
 			void clear();
-			void clear(Color clearColor);
+			void clearColor(Color clearColor);
+			void clearBuffers(uint buffersList);
+
 			void draw(Render_Mode mode, uint first, uint count);
 			void enableFeature(uint glFeature);
 			void disableFeature(uint glFeature);

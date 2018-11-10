@@ -25,7 +25,6 @@ namespace ph_engine {
 			glewExperimental = true;
 			glewInit();
 		}
-		glEnable(GL_DEPTH_TEST);
 	}
 
 	Window::Window(int w, int h, const char* title, WindowSettings& s) {
@@ -46,7 +45,6 @@ namespace ph_engine {
 			glewExperimental = true;
 			glewInit();
 		}
-		glEnable(GL_DEPTH_TEST);
 	}
 
 	Window::~Window() {
@@ -62,20 +60,17 @@ namespace ph_engine {
 	}
 
 	void Window::clear() {
-		if (!custom) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(0.5, 0.5, 0.5, 1);
-		}
-		else custom();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.5, 0.5, 0.5, 1);
 	}
 
-	void Window::clear(Color clearColor){
-		if (!custom) {
-			glm::vec4 tmp = clearColor.toVec4();
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(tmp.r, tmp.g, tmp.b, tmp.a);
-		}
-		else custom();
+	void Window::clearColor(Color clearColor){
+		glm::vec4 tmp = clearColor.toVec4();
+		glClearColor(tmp.r, tmp.g, tmp.b, tmp.a);
+	}
+
+	void Window::clearBuffers(uint buffersList){
+		glClear(buffersList);
 	}
 
 	void Window::draw(Render_Mode mode, uint first, uint count) {
