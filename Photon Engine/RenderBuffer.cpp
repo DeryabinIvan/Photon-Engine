@@ -6,6 +6,8 @@ namespace ph_engine {
 	RenderBuffer::RenderBuffer(){
 		target = GL_RENDERBUFFER;
 		glGenRenderbuffers(1, &objectID);
+		if(!glIsRenderbuffer(objectID))
+			std::cerr << "Created object isn`t RBO\n";
 	}
 	RenderBuffer::~RenderBuffer(){
 		remove();

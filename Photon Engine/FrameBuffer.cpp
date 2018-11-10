@@ -2,10 +2,14 @@
 
 #include "GLEW/glew.h"
 
+#include "System.h"
+
 namespace ph_engine {
 	FrameBuffer::FrameBuffer(){
 		target = GL_FRAMEBUFFER;
-		glGenBuffers(1, &objectID);
+		glGenFramebuffers(1, &objectID);
+		if (!glIsFramebuffer(objectID))
+			std::cerr << "Created object isn`t FBO\n";
 	}
 	FrameBuffer::~FrameBuffer(){
 		remove();

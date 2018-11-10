@@ -62,20 +62,30 @@ int main() {
 	FrameBuffer framebuffer;
 	RenderBuffer renderbuffer;
 
+	renderbuffer.bind();
+	renderbuffer.create(width, height);
+	renderbuffer.bindBaseBuffer();
+
 	framebuffer.bind();
-		framebuffer.attachTexture(width, height, FrameBuffer::COLOR);
-		renderbuffer.bind();
-			renderbuffer.create(width, height);
-			framebuffer.attachRenderBuffer(renderbuffer);
-		renderbuffer.bindBaseBuffer();
+	System::printGLError();
+
+	framebuffer.attachTexture(width, height, FrameBuffer::COLOR);
+	System::printGLError();
+
+	framebuffer.attachRenderBuffer(renderbuffer);
+	System::printGLError();
+
 	framebuffer.bindBaseBuffer();
+	System::printGLError();
+
 	if (framebuffer.checkErrors()) {
 		cerr << "FRAMEBUFFER NOT COMPLETE" << endl;
+		System::printGLError();
 	}
 
 	Shader fragScreen, vertScreen;
-	fragScreen.loadFromFile("res/shaders/framebuffer_fs.glsl", Shader::FRAGMENT);
-	vertScreen.loadFromFile("res/shaders/framebuffer_vs.glsl", Shader::VERTEX);
+	fragScreen.loadFromFile("res/shader/framebuffer_fs.glsl", Shader::FRAGMENT);
+	vertScreen.loadFromFile("res/shader/framebuffer_vs.glsl", Shader::VERTEX);
 
 	ShaderProgram screenProg;
 	screenProg.addShader(fragScreen);
@@ -161,7 +171,7 @@ int main() {
 		//framebuffer render
 		framebuffer.bindBaseBuffer();
 		window.disableFeature(GL_DEPTH_TEST);
-		window.clear();
+		window.clear(white);
 
 		screenProg.use();
 		quadVAO.bind();

@@ -5,6 +5,8 @@
 #include "GLEW/glew.h"
 #include "GLFW/glfw3.h"
 
+#include "Color.h"
+
 namespace ph_engine {
 	struct WindowSettings {
 		unsigned char OPENGL_MAJOR, OPENGL_MINOR;
@@ -33,6 +35,7 @@ namespace ph_engine {
 			void setActive();
 			void swapBuffer();
 			void clear();
+			void clear(Color clearColor);
 			void draw(Render_Mode mode, uint first, uint count);
 			void enableFeature(uint glFeature);
 			void disableFeature(uint glFeature);

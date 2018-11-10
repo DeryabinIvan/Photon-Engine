@@ -25,7 +25,7 @@ namespace ph_engine {
 		glLinkProgram(objectID);
 
 		GLint result;
-		glGetProgramiv(objectID, GL_COMPILE_STATUS, &result);
+		glGetProgramiv(objectID, GL_LINK_STATUS, &result);
 
 		if (!result) {
 #ifdef _DEBUG
