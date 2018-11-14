@@ -7,19 +7,20 @@ namespace ph_engine {
 	class PHOTONENGINE_API Texture:public GLObject {
 		public:
 			enum TEXTURE_LOAD_TYPE { RGB, RGBA };
-			enum TEXTURE_TYPE { DIFFUSE = 1, SPECULAR, DEFAULT };
+			enum TEXTURE_TYPE { COLOR, DEPTH, STENCIL };
 
 			Texture();
 			// Load texture from file
 			void loadFromFile(const char* path, TEXTURE_LOAD_TYPE type = RGB);
-			void loadFromFile(const char* path, TEXTURE_TYPE type = DEFAULT);
+			// Create empty texture
+			void emptyTexture(TEXTURE_TYPE textureType, uint width, uint height);
 
 			static void activeTexture(uint);
 			TEXTURE_TYPE getType() { return type; }
 
 			void bind();
-			static void bind(uint id);
 			void unbind();
+			uint getID();
 
 		private:
 			int width, heigth;

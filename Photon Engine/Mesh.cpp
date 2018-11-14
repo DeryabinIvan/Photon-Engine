@@ -14,17 +14,9 @@ void ph_engine::Mesh::draw(ShaderProgram& program) {
 	for (uint i = 0; i < tex.size(); i++) {
 		Texture::activeTexture(i);
 
-		//for lighting not using now...
 		Texture::TEXTURE_TYPE name = tex[i].getType();
 
-		switch (name){
-			case Texture::DIFFUSE:
-				program.setInt("material.diffuse", i);
-				break;
-			case Texture::SPECULAR:
-				program.setInt("material.specular", i);
-				break;
-		}
+		program.setInt("material.diffuse", i);
 		
 		tex[i].bind();
 	}

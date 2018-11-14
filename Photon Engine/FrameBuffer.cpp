@@ -13,34 +13,18 @@ namespace ph_engine {
 		remove();
 	}
 
-	void FrameBuffer::attachTexture(uint width, uint height, AttachmentType type, uint blockNum){
-		glGenTextures(1, &attachedTex);
-		glBindTexture(GL_TEXTURE_2D, attachedTex);
+	void FrameBuffer::attachTexture(Texture texture, AttachmentType type){
+		texture.bind();
 
-		switch (type){
+		switch (type) {
 			case FrameBuffer::COLOR:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+				glFramebufferTexture(target, GL_COLOR_ATTACHMENT0 , texture.getID(), 0);
 				break;
 			case FrameBuffer::DEPTH:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+				glFramebufferTexture(target, GL_DEPTH_ATTACHMENT, texture.getID(), 0);
 				break;
 			case FrameBuffer::STENCIL:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_STENCIL_INDEX, width, height, 0, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, NULL);
-				break;
-		}
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		switch (type){
-			case FrameBuffer::COLOR:
-				glFramebufferTexture2D(target, GL_COLOR_ATTACHMENT0 + blockNum, GL_TEXTURE_2D, attachedTex, 0);
-				break;
-			case FrameBuffer::DEPTH:
-				glFramebufferTexture2D(target, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, attachedTex, 0);
-				break;
-			case FrameBuffer::STENCIL:
-				glFramebufferTexture2D(target, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, attachedTex, 0);
+				glFramebufferTexture(target, GL_STENCIL_ATTACHMENT, texture.getID(), 0);
 				break;
 		}
 	}
@@ -56,11 +40,12 @@ namespace ph_engine {
 	void FrameBuffer::bind(){
 		glBindFramebuffer(target, objectID);
 	}
-	void FrameBuffer::bindTexture(){
-		glBindTexture(GL_TEXTURE_2D, attachedTex);
-	}
 	void FrameBuffer::bindBaseBuffer(){
 		glBindFramebuffer(target, 0);
+	}
+
+	void FrameBuffer::colorBuffer(uint buffer){
+		glDrawBuffer(buffer);
 	}
 
 	void FrameBuffer::remove(){

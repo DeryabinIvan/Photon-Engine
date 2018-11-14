@@ -31,14 +31,14 @@ namespace ph_engine {
 
 	void PhongMaterial::loadDiffuse(std::string path, int block){
 		diff = new Texture();
-		diff->loadFromFile(path.c_str(), Texture::DIFFUSE);
+		diff->loadFromFile(path.c_str());
 		diffBlock = block;
 
 		diffuse = glm::vec3(-1);
 	}
 	void PhongMaterial::loadSpecular(std::string path, int block){
 		spec = new Texture();
-		spec->loadFromFile(path.c_str(), Texture::SPECULAR);
+		spec->loadFromFile(path.c_str());
 		specBlock = block;
 
 		specular = glm::vec3(-1);

@@ -3,10 +3,13 @@
 #include "GLEW/glew.h"
 #include "SOIL/SOIL.h"
 
+#include "System.h"
+
 namespace ph_engine {
 
 	Texture::Texture() {
 		target = GL_TEXTURE_2D;
+		glGenTextures(1, &objectID);
 	}
 
 	// Load texture from file
@@ -14,18 +17,29 @@ namespace ph_engine {
 		GLubyte* image = SOIL_load_image(path, &width, &heigth, 0, type == RGB ? SOIL_LOAD_RGB : SOIL_LOAD_RGBA);
 
 		GLuint image_target = (type == RGB ? GL_RGB : GL_RGBA);
-		glGenTextures(1, &objectID);
 		bind();
 		//Filtering settings
-
 		glTexImage2D(target, 0, image_target, width, heigth, 0, image_target, GL_UNSIGNED_BYTE, image);
 		glGenerateMipmap(target);
 		SOIL_free_image_data(image);
 		unbind();
 	}
-	void Texture::loadFromFile(const char* path, TEXTURE_TYPE type) {
-		loadFromFile(path, TEXTURE_LOAD_TYPE::RGB);
-		this->type = type;
+
+	void Texture::emptyTexture(TEXTURE_TYPE textureType, uint width, uint height){
+		switch (textureType) {
+			case Texture::COLOR:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+				break;
+			case Texture::DEPTH:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+				break;
+			case Texture::STENCIL:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_STENCIL_INDEX, width, height, 0, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, NULL);
+				break;
+		}
+		
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
 	void Texture::activeTexture(uint num) {
@@ -37,10 +51,10 @@ namespace ph_engine {
 	void Texture::bind() {
 		glBindTexture(target, objectID);
 	}
-	void Texture::bind(uint id){
-		glBindTexture(GL_TEXTURE_2D, id);
-	}
 	void Texture::unbind() {
 		glBindTexture(target, 0);
+	}
+	uint Texture::getID(){
+		return objectID;
 	}
 }

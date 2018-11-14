@@ -80,6 +80,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shader\fragment.glsl" />
+    <None Include="res\shader\framebuffer_fs.glsl" />
+    <None Include="res\shader\framebuffer_vs.glsl" />
     <None Include="res\shader\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

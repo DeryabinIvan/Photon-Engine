@@ -3,26 +3,25 @@
 #include "GLObject.h"
 
 #include "RenderBuffer.h"
+#include "Texture.h"
 
 namespace ph_engine {
 	class PHOTONENGINE_API FrameBuffer:GLObject {
-		uint attachedTex;
-
 		public:
 			enum AttachmentType {COLOR, DEPTH, STENCIL};
 
 			FrameBuffer();
 			~FrameBuffer();
 
-			void attachTexture(uint width, uint height, AttachmentType type, uint blockNum = 0);
+			void attachTexture(Texture texture, AttachmentType type);
 			void attachRenderBuffer(RenderBuffer rb, uint attachType);
 
 			//@return return true if framebuffer not complete
 			bool checkErrors();
 
 			void bind();
-			void bindTexture();
 			void bindBaseBuffer();
+			void colorBuffer(uint buffer);
 
 			void remove();
 	};

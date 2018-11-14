@@ -90,21 +90,24 @@ int main() {
 		quadVBO.unbind();
 	quadVAO.unbind();
 
+	//RenderBuffer renderbuffer;
 	FrameBuffer framebuffer;
-	RenderBuffer renderbuffer;
+	Texture color, depth;
 
-	renderbuffer.bind();
-	renderbuffer.create(GL_DEPTH_COMPONENT, width, height);
-	renderbuffer.bindBaseBuffer();
+	color.bind();
+	color.emptyTexture(Texture::COLOR, width, height);
+	depth.bind();
+	depth.emptyTexture(Texture::DEPTH, width, height);
 
 	framebuffer.bind();
-	framebuffer.attachTexture(width, height, FrameBuffer::COLOR);
-	framebuffer.attachRenderBuffer(renderbuffer, GL_DEPTH_ATTACHMENT);
+	framebuffer.attachTexture(color, FrameBuffer::COLOR);
+	framebuffer.attachTexture(depth, FrameBuffer::DEPTH);
 	if (framebuffer.checkErrors()) {
 		cerr << "FRAMEBUFFER NOT COMPLETE" << endl;
 		System::printGLError();
 	}
 	framebuffer.bindBaseBuffer();
+
 
 	//'Game' loop
 	while (!window.shouldClose()) {
@@ -162,7 +165,7 @@ int main() {
 
 		screenProg.use();
 		quadVAO.bind();
-		framebuffer.bindTexture();
+		color.bind();
 		window.draw(Window::TRIANGLES, 0, 6);
 
 		window.swapBuffer();

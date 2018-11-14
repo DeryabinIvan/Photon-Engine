@@ -131,14 +131,12 @@ namespace ph_engine {
 					break;
 				}
 			}
-			// ���� �������� �� ���� ���������
 			if (!skip) {
 				Texture texture;
 				string filename = dir + '/' + path.C_Str();
 
-				texture.loadFromFile(filename.c_str(), Texture::TEXTURE_TYPE(type));
+				texture.loadFromFile(filename.c_str());
 				textures.push_back(texture);
-				// ������� �������� � ������ ��� �����������
 				textures_loaded.push_back(path.C_Str());
 			}
 		}
