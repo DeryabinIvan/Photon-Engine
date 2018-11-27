@@ -6,12 +6,12 @@
 namespace ph_engine {
 	class PHOTONENGINE_API Texture:public GLObject {
 		public:
-			enum TEXTURE_LOAD_TYPE { RGB, RGBA };
 			enum TEXTURE_TYPE { COLOR, DEPTH, STENCIL };
+			enum TEXTURE_CHANNELS { GREY = 1, RGB = 3, RGBA = 4 };
 
 			Texture();
 			// Load texture from file
-			void loadFromFile(const char* path, TEXTURE_LOAD_TYPE type = RGB);
+			void loadFromFile(const char* path);
 			// Create empty texture
 			void emptyTexture(TEXTURE_TYPE textureType, uint width, uint height);
 
@@ -23,7 +23,9 @@ namespace ph_engine {
 			uint getID();
 
 		private:
-			int width, heigth;
+			int width, heigth, components;
 			TEXTURE_TYPE type;
+
+			TEXTURE_CHANNELS channelsCount(const char* path);
 	};
 }

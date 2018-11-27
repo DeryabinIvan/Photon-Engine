@@ -7,10 +7,10 @@ namespace ph_engine {
 	double System::getTime() {
 		return glfwGetTime();
 	}
-
 	void System::setTime(double time) {
 		glfwSetTime(time);
 	}
+
 	uint System::getGLError(){
 		return glGetError();
 	}
@@ -42,6 +42,21 @@ namespace ph_engine {
 					break;
 			}
 		}
+	}
+
+	void GLAPIENTRY System::defualtDebugCallback(GLenum source, GLenum type, GLuint id,
+		GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+			type, severity, message);
+	}
+	void System::activeDebugOutput(){
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(defualtDebugCallback, 0);
+	}
+	void System::setDebugCallback(GLDEBUGPROC debugCallback){
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(debugCallback, 0);
 	}
 }
 

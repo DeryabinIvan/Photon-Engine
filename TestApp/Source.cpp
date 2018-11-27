@@ -9,6 +9,7 @@ int main() {
 
 	Window window(width, height, "Photon Engine test app");
 	window.setActive();
+	System::activeDebugOutput();
 	
 	Keyboard keyboard(window);
 	Mouse mouse(window);
@@ -50,7 +51,7 @@ int main() {
 
 	Model model;
 
-	model.load(path + "cube/cube.fbx");
+	model.load(path + "cube/cube.blend");
 	model.translate(0, 0, -3);
 	model.scale(1.f / 2.f);
 

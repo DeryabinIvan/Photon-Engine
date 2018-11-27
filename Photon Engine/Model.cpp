@@ -3,7 +3,6 @@
 #include "GLEW/glew.h"
 #include "GLM/glm.hpp"
 #include "GLM/gtc/matrix_transform.hpp"
-#include "SOIL/SOIL.h"
 
 namespace ph_engine {
 	Model::Model(){

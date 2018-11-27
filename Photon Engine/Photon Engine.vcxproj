@@ -58,7 +58,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLM_ENABLE_EXPERIMENTAL;GLEW_STATIC;_DEBUG;PHOTONENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLM_ENABLE_EXPERIMENTAL;GLEW_STATIC;STB_IMAGE_IMPLEMENTATION;_DEBUG;PHOTONENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Photon Engine\libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerOutput>NoListing</AssemblerOutput>
@@ -72,7 +72,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Photon Engine\libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>openal32.lib;opengl32.lib;gdi32.lib;glew32s.lib;glfw3.lib;SOIL.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openal32.lib;opengl32.lib;gdi32.lib;glew32s.lib;glfw3.lib;FreeImage.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -83,7 +83,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLM_ENABLE_EXPERIMENTAL;GLEW_STATIC;NDEBUG;PHOTONENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLM_ENABLE_EXPERIMENTAL;GLEW_STATIC;STB_IMAGE_IMPLEMENTATION;NDEBUG;PHOTONENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Photon Engine\libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerOutput>NoListing</AssemblerOutput>
@@ -96,7 +96,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Photon Engine\libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>openal32.lib;opengl32.lib;gdi32.lib;glew32s.lib;glfw3.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openal32.lib;opengl32.lib;gdi32.lib;glew32s.lib;glfw3.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
