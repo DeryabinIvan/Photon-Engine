@@ -5,6 +5,8 @@
 #include "GLEW/glew.h"
 #include "GLFW/glfw3.h"
 
+#include "Color.h"
+
 namespace ph_engine {
 	struct WindowSettings {
 		unsigned char OPENGL_MAJOR, OPENGL_MINOR;
@@ -18,11 +20,12 @@ namespace ph_engine {
 		int width, heigth;
 
 		void resize(GLFWwindow*, int, int);
-		ClearFunction custom = nullptr;
 
 		static int WINDOWS_COUNT;
 
 		public:
+			enum Render_Mode { TRIANGLES = GL_TRIANGLES, POINTS = GL_POINTS };
+
 			Window(int w, int h, const char* title);
 			Window(int w, int h, const char* title, WindowSettings& s);
 
@@ -30,7 +33,15 @@ namespace ph_engine {
 
 			void setActive();
 			void swapBuffer();
+
+			//default clear funtion
 			void clear();
+			void clearColor(Color clearColor);
+			void clearBuffers(uint buffersList);
+
+			void draw(Render_Mode mode, uint first, uint count);
+			void enableFeature(uint glFeature);
+			void disableFeature(uint glFeature);
 
 			bool shouldClose();
 			void close();

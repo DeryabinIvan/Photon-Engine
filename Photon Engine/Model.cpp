@@ -3,7 +3,6 @@
 #include "GLEW/glew.h"
 #include "GLM/glm.hpp"
 #include "GLM/gtc/matrix_transform.hpp"
-#include "SOIL/SOIL.h"
 
 namespace ph_engine {
 	Model::Model(){
@@ -69,12 +68,12 @@ namespace ph_engine {
 	}
 
 	Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
-		vector<Vertex> verticies;
+		vector<Mesh::Vertex> verticies;
 		vector<uint> indices;
 		vector<Texture> textures;
 
 		for (uint i = 0; i < mesh->mNumVertices; i++) {
-			Vertex vertex;
+			Mesh::Vertex vertex;
 			
 			glm::vec3 tmp;
 			tmp.x = mesh->mVertices[i].x;
@@ -131,14 +130,12 @@ namespace ph_engine {
 					break;
 				}
 			}
-			// ���� �������� �� ���� ���������
 			if (!skip) {
 				Texture texture;
 				string filename = dir + '/' + path.C_Str();
 
-				texture.loadFromFile(filename.c_str(), TEXTURE_TYPE(type));
+				texture.loadFromFile(filename.c_str());
 				textures.push_back(texture);
-				// ������� �������� � ������ ��� �����������
 				textures_loaded.push_back(path.C_Str());
 			}
 		}

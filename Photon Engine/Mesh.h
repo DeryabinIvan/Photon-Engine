@@ -4,9 +4,9 @@
 #include <vector>
 #include <sstream>
 
-#include "VAO.h"
-#include "VBO.h"
-#include "EBO.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+#include "ElementBuffer.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
 
@@ -17,28 +17,26 @@ using std::string;
 using std::stringstream;
 
 namespace ph_engine {
-	struct Vertex {
-		glm::vec3 position;
-		glm::vec3 normal;
-		glm::vec2 texCoord;
-	};
-
-	typedef unsigned int uint;
-
-	class Mesh {
+	class PHOTONENGINE_API Mesh {
 		public:
-		vector<Vertex> vert;
-		vector<uint> ind;
-		vector<Texture> tex;
+			struct Vertex {
+				glm::vec3 position;
+				glm::vec3 normal;
+				glm::vec2 texCoord;
+			};
 
-		Mesh(vector<Vertex> v, vector<uint> i, vector<Texture> t);
-		void draw(ShaderProgram& program);
+			vector<Vertex> vert;
+			vector<uint> ind;
+			vector<Texture> tex;
+
+			Mesh(vector<Vertex> v, vector<uint> i, vector<Texture> t);
+			void draw(ShaderProgram& program);
 
 		private:
-		VAO* vao;
-		VBO* vbo;
-		EBO* ebo;
+			VertexArray* vao;
+			VertexBuffer* vbo;
+			ElementBuffer* ebo;
 
-		void setup();
+			void setup();
 	};
 }

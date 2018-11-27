@@ -11,7 +11,17 @@ using namespace std;
 
 namespace ph_engine {
 	bool Shader::loadFromStr(const char * str, SHADER_TYPE type) {
-		objectID = glCreateShader(type == VERTEX ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
+		switch (type) {
+			case VERTEX:
+				objectID = glCreateShader(GL_VERTEX_SHADER);
+				break;
+			case FRAGMENT:
+				objectID = glCreateShader(GL_FRAGMENT_SHADER);
+				break;
+			case GEOMETRY:
+				objectID = glCreateShader(GL_GEOMETRY_SHADER);
+				break;
+		}
 
 		//Load shader from string...
 		glShaderSource(objectID, 1, &str, nullptr);
@@ -30,7 +40,17 @@ namespace ph_engine {
 		return true;
 	}
 	bool Shader::loadFromFile(const char * filename, SHADER_TYPE type) {
-		objectID = glCreateShader(type == VERTEX ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
+		switch (type) {
+			case VERTEX:
+				objectID = glCreateShader(GL_VERTEX_SHADER);
+				break;
+			case FRAGMENT:
+				objectID = glCreateShader(GL_FRAGMENT_SHADER);
+				break;
+			case GEOMETRY:
+				objectID = glCreateShader(GL_GEOMETRY_SHADER);
+				break;
+		}
 
 		//Load shader from file...
 		ifstream file(filename);
@@ -54,10 +74,12 @@ namespace ph_engine {
 		GLint result;
 		glGetShaderiv(objectID, GL_COMPILE_STATUS, &result);
 		if (!result) {
+#ifdef _DEBUG
 			GLchar errorLog[512];
 			glGetShaderInfoLog(objectID, 512, nullptr, errorLog);
 
 			std::cerr << "Compile shader error:\n" << errorLog << std::endl;
+#endif // _DEBUG
 			return false;
 		}
 

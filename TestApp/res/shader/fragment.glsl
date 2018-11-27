@@ -6,9 +6,6 @@ in vec2 TexCoords;
 in vec3 Normal;
 in vec3 FragPos;
 
-// texture samplers
-uniform sampler2D texture0;
-
 uniform vec3 viewPos;
 struct Light{
 	vec4 position;
@@ -22,8 +19,15 @@ struct Light{
 	vec3 diffuseStrength;
 	vec3 specularStrength;
 };
+struct Material{
+	sampler2D diffuse;
+	sampler2D specular;
 
-uniform Light l1, l2, l3;
+	float shininess;
+};
+
+uniform Light l;
+uniform Material material;
 
 vec3 dirLight(Light light){
 	//Ambient
@@ -35,9 +39,8 @@ vec3 dirLight(Light light){
 
 	//Specular
 	vec3 viewDir = normalize(viewPos - FragPos);
-	vec3 reflectionDir = reflect(-lightDir, Normal);
-
-	vec3 specular = pow(max(dot(viewDir, reflectionDir), 0), 0.15) * light.specularStrength;
+	vec3 halfway = normalize(lightDir + viewDir);
+	vec3 specular = pow(max(dot(Normal, halfway), 0), material.shininess) * light.specularStrength * texture(material.specular, TexCoords).rgb;
 
 	//Result color
 	return (ambient + diffuse + specular) * light.color;
@@ -58,9 +61,8 @@ vec3 dotLight(Light light){
 	//Specular
 	vec3 specularStrength = light.specularStrength;
 	vec3 viewDir = normalize(viewPos - FragPos);
-	vec3 reflectionDir = reflect(-lightDir, Normal);
-
-	vec3 specular = pow(max(dot(viewDir, reflectionDir), 0), 0.15) * specularStrength;
+	vec3 halfway = normalize(lightDir + viewDir);
+	vec3 specular = pow(max(dot(Normal, halfway), 0), material.shininess) * specularStrength * texture(material.specular, TexCoords).rgb;
 
 	//Result color
 	return (ambient + diffuse + specular) * light.color * attenuation;
@@ -78,11 +80,10 @@ vec3 spotLight(Light light) {
 	vec3 diffuse = max(dot(Normal, lightDir), 0) * diffuseStrength;
 
 	//Specular
-	vec3 specularStrength = light.specularStrength;
+	vec3 specularStrength = light.specularStrength * texture(material.specular, TexCoords).rgb;
 	vec3 viewDir = normalize(viewPos - FragPos);
-	vec3 reflectionDir = reflect(-lightDir, Normal);
-
-	vec3 specular = pow(max(dot(viewDir, reflectionDir), 0), 0.15) * specularStrength;
+	vec3 halfway = normalize(lightDir + viewDir);
+	vec3 specular = pow(max(dot(Normal, halfway), 0), material.shininess) * specularStrength;
 
 	// spotlight (soft edges)
     float theta = dot(lightDir, normalize(-light.direction)); 
@@ -95,7 +96,7 @@ vec3 spotLight(Light light) {
 
 void main(){
 	//Result color
-	vec3 FragColor = texture(texture0, TexCoords).rgb;
-	vec3 resultLight = dotLight(l1) + dirLight(l2) + spotLight(l3);
+	vec3 FragColor = texture(material.diffuse, TexCoords).rgb;
+	vec3 resultLight = dotLight(l);
 	resultColor = vec4(resultLight * FragColor, 1);
 }

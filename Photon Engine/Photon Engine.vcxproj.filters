@@ -36,22 +36,10 @@
     <ClInclude Include="Photon Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EBO.h">
-      <Filter>Header Files\low-level</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files\low-level\dll-stuff</Filter>
     </ClInclude>
     <ClInclude Include="GLObject.h">
-      <Filter>Header Files\low-level</Filter>
-    </ClInclude>
-    <ClInclude Include="GL_Enums.h">
-      <Filter>Header Files\low-level</Filter>
-    </ClInclude>
-    <ClInclude Include="VAO.h">
-      <Filter>Header Files\low-level</Filter>
-    </ClInclude>
-    <ClInclude Include="VBO.h">
       <Filter>Header Files\low-level</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -78,9 +66,6 @@
     <ClInclude Include="ShaderProgram.h">
       <Filter>Header Files\high-level</Filter>
     </ClInclude>
-    <ClInclude Include="System.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\low-level</Filter>
     </ClInclude>
@@ -95,6 +80,33 @@
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader IO.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhongMaterial.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="LowLevelAPI.h">
+      <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementBuffer.h">
+      <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexArray.h">
+      <Filter>Header Files\low-level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -128,18 +140,6 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files\high-level</Filter>
     </ClCompile>
-    <ClCompile Include="EBO.cpp">
-      <Filter>Source Files\low-level</Filter>
-    </ClCompile>
-    <ClCompile Include="VAO.cpp">
-      <Filter>Source Files\low-level</Filter>
-    </ClCompile>
-    <ClCompile Include="VBO.cpp">
-      <Filter>Source Files\low-level</Filter>
-    </ClCompile>
-    <ClCompile Include="System.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\low-level</Filter>
     </ClCompile>
@@ -151,6 +151,27 @@
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>Source Files\low-level</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhongMaterial.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Source Files\low-level</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementBuffer.cpp">
+      <Filter>Source Files\low-level</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexArray.cpp">
+      <Filter>Source Files\low-level</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
