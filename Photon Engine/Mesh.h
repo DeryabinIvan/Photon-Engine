@@ -9,14 +9,15 @@
 #include "ElementBuffer.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
+#include "PhongMaterial.h"
 
 #include "assimp/scene.h"
 
-using std::vector;
-using std::string;
-using std::stringstream;
-
 namespace ph_engine {
+	using std::vector;
+	using std::string;
+	using std::stringstream;
+
 	class PHOTONENGINE_API Mesh {
 		public:
 			struct Vertex {
@@ -25,14 +26,15 @@ namespace ph_engine {
 				glm::vec2 texCoord;
 			};
 
-			vector<Vertex> vert;
-			vector<uint> ind;
-			vector<Texture> tex;
-
-			Mesh(vector<Vertex> v, vector<uint> i, vector<Texture> t);
+			Mesh(vector<Vertex> v, vector<uint> i);
+			void loadTextures(string diffuse, string specular);
 			void draw(ShaderProgram& program);
 
 		private:
+			vector<Vertex> vert;
+			vector<uint> ind;
+			PhongMaterial material;
+
 			VertexArray* vao;
 			VertexBuffer* vbo;
 			ElementBuffer* ebo;

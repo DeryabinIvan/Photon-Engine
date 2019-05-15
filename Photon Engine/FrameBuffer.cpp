@@ -13,7 +13,7 @@ namespace ph_engine {
 		remove();
 	}
 
-	void FrameBuffer::attachTexture(Texture texture, AttachmentType type){
+	void FrameBuffer::attachTexture(Texture& texture, AttachmentType type){
 		texture.bind();
 
 		switch (type) {

@@ -3,6 +3,7 @@
 #include "Config.h"
 
 #include "Mesh.h"
+#include "PhongMaterial.h"
 #include "ShaderProgram.h"
 
 #include "assimp/Importer.hpp"
@@ -36,6 +37,6 @@ namespace ph_engine {
 
 			void processNode(aiNode* node, const aiScene* scene);
 			Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-			vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
+			string getTexturePath(aiMaterial* mat, aiTextureType type);
 	};
 }

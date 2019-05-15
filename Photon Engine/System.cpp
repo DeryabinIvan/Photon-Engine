@@ -15,6 +15,7 @@ namespace ph_engine {
 		return glGetError();
 	}
 	void System::printGLError(){
+#ifdef _DEBUG
 		uint error = getGLError();
 		if (error != GL_NO_ERROR) {
 			std::cerr << "OpenGL error: ";
@@ -42,13 +43,16 @@ namespace ph_engine {
 					break;
 			}
 		}
+#endif
 	}
 
 	void GLAPIENTRY System::defualtDebugCallback(GLenum source, GLenum type, GLuint id,
 		GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+#ifdef _DEBUG
 		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
 			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
 			type, severity, message);
+#endif
 	}
 	void System::activeDebugOutput(){
 		glEnable(GL_DEBUG_OUTPUT);
