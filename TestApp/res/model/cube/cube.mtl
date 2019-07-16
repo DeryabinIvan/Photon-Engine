@@ -1,21 +1,10 @@
-# Blender MTL File: 'cube.blend'
+# Blender MTL File: 'None'
 # Material Count: 1
 
 newmtl Material
-
-#ambient
-Ka 1.000000 1.000000 1.000000
-
-#diffuse
-Kd 1.000000 1.000000 1.000000
-
-#specular
-Ks 0.500000 0.500000 0.500000
-Ns 225.000000
-
 d 1.000000
-illum 2
 
-#map_Ka container.png
 map_Kd container.png
 map_Ks container_specular.png
+
+illum 2

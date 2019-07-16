@@ -7,6 +7,10 @@ int main() {
 
 	int width = 800, height = 600;
 
+	cout << "Starting app...\n";
+	Timer timer;
+	timer.start();
+
 	Window window(width, height, "Photon Engine test app");
 	window.setActive();
 	System::activeDebugOutput();
@@ -116,6 +120,13 @@ int main() {
 	}
 	framebuffer.bindBaseBuffer();
 
+	cout << "\nSetup completed in " << timer.step() << "s\n";
+
+	timer.setDuration(2000);
+	timer.setTimerCallback([] {
+		cout << "<--Timer event-->\n";
+		});
+	timer.startMT();
 
 	//Render loop
 	while (!window.shouldClose()) {
@@ -200,6 +211,8 @@ int main() {
 
 		window.swapBuffer();
 	}
+
+	timer.stopMT();
 
 	return EXIT_SUCCESS;
 }

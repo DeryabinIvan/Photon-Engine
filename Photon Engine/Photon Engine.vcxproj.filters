@@ -108,6 +108,9 @@
     <ClInclude Include="VertexArray.h">
       <Filter>Header Files\low-level</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -175,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="NonCopyable.h">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\high-level</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
