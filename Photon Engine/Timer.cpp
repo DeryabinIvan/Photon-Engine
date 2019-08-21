@@ -2,7 +2,7 @@
 
 namespace ph_engine {
 	Timer::~Timer(){
-		if (duration.count() > 0 && event)
+		if (duration.count() > 0 && event && !stopped)
 			barrier.set_value();
 	}
 	void Timer::start(){
@@ -25,6 +25,8 @@ namespace ph_engine {
 	void Timer::startMT(){
 		if (duration.count() == 0 || !event) return;
 		
+		stopped = false;
+
 		barrier_future = barrier.get_future();
 
 		std::thread t([&]() {
@@ -37,6 +39,8 @@ namespace ph_engine {
 	void Timer::stopMT(){
 		//Stop timer thread
 		barrier.set_value();
+
+		stopped = true;
 	}
 	void Timer::setDuration(int ms){
 		duration = std::chrono::milliseconds(ms);

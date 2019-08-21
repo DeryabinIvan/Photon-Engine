@@ -10,6 +10,7 @@ namespace ph_engine {
 	class PHOTONENGINE_API Timer{
 		std::chrono::time_point<std::chrono::steady_clock> start_point, end_point;
 		std::chrono::duration<double> duration = std::chrono::seconds(0);
+		bool stopped = false;
 
 		public:
 			~Timer();

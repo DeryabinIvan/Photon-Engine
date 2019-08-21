@@ -2,6 +2,13 @@
 
 using namespace ph_engine;
 
+int frames = 0;
+
+void event() {
+	cout << "FPS: " << frames << endl;
+	frames = 0;
+}
+
 int main() {
 	cout << "Photon Engine v" << ph_engine::VERSION_MAJOR << "." << ph_engine::VERSION_MINOR << endl;
 
@@ -11,7 +18,10 @@ int main() {
 	Timer timer;
 	timer.start();
 
-	Window window(width, height, "Photon Engine test app");
+	Window::WindowSettings settings;
+	settings.framerate = 60;
+
+	Window window(width, height, "Photon Engine test app", settings);
 	window.setActive();
 	System::activeDebugOutput();
 	
@@ -89,19 +99,12 @@ int main() {
 		 1.0f, -1.0f,  1.0f, 0.0f,
 		 1.0f,  1.0f,  1.0f, 1.0f
 	};
-	VertexArray quadVAO;
-	VertexBuffer quadVBO;
-	quadVAO.bind();
-		quadVBO.bind();
-			quadVBO.load(sizeof(quadVertices), &quadVertices);
 
-			quadVBO.enableAttrib(0);
-			quadVBO.addVertexAttrib(0, 2, false, 4 * sizeof(float), (void*)0);
+	MeshDataHelper off;
+	off.setVertex(0, 2);
+	off.setTexture(2, 2);
 
-			quadVBO.enableAttrib(1);
-			quadVBO.addVertexAttrib(1, 2, false, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-		quadVBO.unbind();
-	quadVAO.unbind();
+	Mesh plane(off, quadVertices, sizeof(quadVertices) / sizeof(float));
 
 	//RenderBuffer renderbuffer;
 	FrameBuffer framebuffer;
@@ -122,10 +125,8 @@ int main() {
 
 	cout << "\nSetup completed in " << timer.step() << "s\n";
 
-	timer.setDuration(2000);
-	timer.setTimerCallback([] {
-		cout << "<--Timer event-->\n";
-		});
+	timer.setDuration(1000);
+	timer.setTimerCallback(event);
 	timer.startMT();
 
 	//Render loop
@@ -199,9 +200,8 @@ int main() {
 		window.clearBuffers(GL_COLOR_BUFFER_BIT);
 
 		screenProg.use();
-		quadVAO.bind();
 		color.bind();
-		window.draw(Window::TRIANGLES, 0, 6);
+		plane.draw(screenProg);
 
 		if (keyboard.keyPressedOnce(Keyboard::KEY_F12)) {
 			color.save("color_buffer.png");
@@ -210,6 +210,7 @@ int main() {
 		}
 
 		window.swapBuffer();
+		frames++;
 	}
 
 	timer.stopMT();

@@ -8,13 +8,6 @@
 #include "Color.h"
 
 namespace ph_engine {
-	struct WindowSettings {
-		unsigned char OPENGL_MAJOR, OPENGL_MINOR;
-	};
-
-	typedef void(*ClearFunction)(void);
-	typedef void(*InitFunction)(void);
-
 	class PHOTONENGINE_API Window {
 		GLFWwindow* id;
 		int width, heigth;
@@ -25,6 +18,13 @@ namespace ph_engine {
 
 		public:
 			enum Render_Mode { TRIANGLES = GL_TRIANGLES, POINTS = GL_POINTS };
+			struct WindowSettings {
+				unsigned char OPENGL_MAJOR = 3, OPENGL_MINOR = 3,
+					framerate = 0;
+			};
+
+			typedef void(*ClearFunction)(void);
+			typedef void(*InitFunction)(void);
 
 			Window(int w, int h, const char* title);
 			Window(int w, int h, const char* title, WindowSettings& s);

@@ -7,6 +7,8 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "ElementBuffer.h"
+#include "MeshDataOffsets.h"
+
 #include "ShaderProgram.h"
 #include "Texture.h"
 #include "PhongMaterial.h"
@@ -26,19 +28,22 @@ namespace ph_engine {
 				glm::vec2 texCoord;
 			};
 
-			Mesh(vector<Vertex> v, vector<uint> i);
+			Mesh(MeshDataHelper off, const void *raw_data, size_t elements);
+			Mesh(vector<Vertex> &vert, vector<uint> &ind);
+
 			void loadTextures(string diffuse, string specular);
+
 			void draw(ShaderProgram& program);
 
 		private:
-			vector<Vertex> vert;
-			vector<uint> ind;
+			uint indSize = 0;
 			PhongMaterial material;
+
+			bool isCustom;
+			uint vertexCount = 0;
 
 			VertexArray* vao;
 			VertexBuffer* vbo;
 			ElementBuffer* ebo;
-
-			void setup();
 	};
 }

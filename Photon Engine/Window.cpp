@@ -30,6 +30,10 @@ namespace ph_engine {
 	Window::Window(int w, int h, const char* title, WindowSettings& s) {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, s.OPENGL_MAJOR);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, s.OPENGL_MINOR);
+		
+		if (s.framerate) {
+			glfwWindowHint(GLFW_REFRESH_RATE, s.framerate);
+		}
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		id = glfwCreateWindow(w, h, title, nullptr, nullptr);
