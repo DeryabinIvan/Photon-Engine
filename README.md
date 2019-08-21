@@ -2,8 +2,9 @@
 This is simple OpenGL-based game engine, written on C++.
 # Features
 - Model loading
+- If you want you can create custom meshes. But you need manually activate/bind textures.
 - Phong-based lighting (dot, directed and spot light`s with many settings)
-- Shaders and shader programs (atually this is OpenGL feature)
+- Shaders and shader programs
 # Disclamer
 - May contains bugs
 - My English :)
