@@ -14,6 +14,10 @@ namespace ph_engine {
 		this->position = glm::vec3(x, y, z);
 	}
 
+	void Player::setSpeed(float speed) {
+		this->speed = speed;
+	}
+
 	void Player::move(const Keyboard& key) {
 		if (key.keyPressed(Keyboard::KEY_W))
 			position += speed * front;

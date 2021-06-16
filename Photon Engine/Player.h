@@ -19,6 +19,8 @@ namespace ph_engine {
 		Player(glm::vec3 posistion, float speed);
 		Player(float x, float y, float z, float speed);
 
+		void setSpeed(float speed);
+
 		void move(const Keyboard& key);
 		void look(const Mouse& mouse);
 	};

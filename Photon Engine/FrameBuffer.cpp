@@ -17,13 +17,13 @@ namespace ph_engine {
 		texture.bind();
 
 		switch (type) {
-			case FrameBuffer::COLOR:
+			case AttachmentType::COLOR:
 				glFramebufferTexture(target, GL_COLOR_ATTACHMENT0 , texture.getID(), 0);
 				break;
-			case FrameBuffer::DEPTH:
+			case AttachmentType::DEPTH:
 				glFramebufferTexture(target, GL_DEPTH_ATTACHMENT, texture.getID(), 0);
 				break;
-			case FrameBuffer::STENCIL:
+			case AttachmentType::STENCIL:
 				glFramebufferTexture(target, GL_STENCIL_ATTACHMENT, texture.getID(), 0);
 				break;
 		}

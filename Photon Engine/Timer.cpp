@@ -8,7 +8,7 @@ namespace ph_engine {
 	void Timer::start(){
 		start_point = std::chrono::steady_clock::now();
 	}
-	double Timer::step(){
+	double Timer::timestamp(){
 		end_point = std::chrono::steady_clock::now();
 
 		std::chrono::duration<double> tmp = end_point - start_point;

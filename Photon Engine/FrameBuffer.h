@@ -8,7 +8,7 @@
 namespace ph_engine {
 	class PHOTONENGINE_API FrameBuffer:GLObject {
 		public:
-			enum AttachmentType {COLOR, DEPTH, STENCIL};
+			enum class AttachmentType {COLOR, DEPTH, STENCIL};
 
 			FrameBuffer();
 			~FrameBuffer();

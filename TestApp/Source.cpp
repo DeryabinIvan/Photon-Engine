@@ -3,10 +3,12 @@
 using namespace ph_engine;
 
 int frames = 0;
+bool secondPass = false;
 
-void event() {
+void frameEvent() {
 	cout << "FPS: " << frames << endl;
 	frames = 0;
+	secondPass = true;
 }
 
 int main() {
@@ -46,7 +48,7 @@ int main() {
 
 	glm::vec3 position = glm::vec3(0, 1, 0);
 
-	Player player(position, 0.005f);
+	Player player(position, 4.0f / 144.0f);
 	Camera camera(position, glm::vec3(0, 0, -3));
 
 	bool isFreeCam = false, isMoving = true;
@@ -58,17 +60,17 @@ int main() {
 	Light dotL, spot;
 
 	dotL.makeDot(lightPos, white);
-	dotL.setAmbient(0.1);
-	dotL.setDiffuse(0.5);
-	dotL.setSpecular(1);
-	dotL.setAttenuation(0.032, 0.09, 1);
+	dotL.setAmbient(0.1f);
+	dotL.setDiffuse(0.5f);
+	dotL.setSpecular(1.f);
+	dotL.setAttenuation(0.032f, 0.09f, 1.f);
 	dotL.getPosition().y = 0.5;
 
 	spot.makeSpot(position, glm::vec3(0, 0, -3), 10, 20, white);
-	spot.setAmbient(0);
-	spot.setDiffuse(0.5);
-	spot.setSpecular(1);
-	spot.setAttenuation(0.032, 0.09, 1);
+	spot.setAmbient(0.f);
+	spot.setDiffuse(0.5f);
+	spot.setSpecular(1.f);
+	spot.setAttenuation(0.032f, 0.09f, 1.f);
 
 	const std::string path = "res/model/";
 
@@ -111,22 +113,22 @@ int main() {
 
 	Texture color, depth;
 
-	color.emptyTexture(Texture::COLOR, width, height);
-	depth.emptyTexture(Texture::DEPTH, width, height);
+	color.emptyTexture(Texture::TEXTURE_TYPE::COLOR, width, height);
+	depth.emptyTexture(Texture::TEXTURE_TYPE::DEPTH, width, height);
 
 	framebuffer.bind();
-	framebuffer.attachTexture(color, FrameBuffer::COLOR);
-	framebuffer.attachTexture(depth, FrameBuffer::DEPTH);
+	framebuffer.attachTexture(color, FrameBuffer::AttachmentType::COLOR);
+	framebuffer.attachTexture(depth, FrameBuffer::AttachmentType::DEPTH);
 	if (framebuffer.checkErrors()) {
 		cerr << "FRAMEBUFFER NOT COMPLETE" << endl;
 		System::printGLError();
 	}
 	framebuffer.bindBaseBuffer();
 
-	cout << "\nSetup completed in " << timer.step() << "s\n";
+	cout << "\nSetup completed in " << timer.timestamp() << "s\n";
 
 	timer.setDuration(1000);
-	timer.setTimerCallback(event);
+	timer.setTimerCallback(frameEvent);
 	timer.startMT();
 
 	//Render loop
@@ -152,6 +154,10 @@ int main() {
 		}
 
 		if (isFreeCam) {
+			if (secondPass) {
+				player.setSpeed(4.f / (float)frames);
+				secondPass = false;
+			}
 			player.move(keyboard);
 			player.look(mouse);
 		}

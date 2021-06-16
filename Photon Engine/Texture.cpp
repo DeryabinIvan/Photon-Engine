@@ -46,11 +46,11 @@ namespace ph_engine {
 		components = channelsCount(path);
 
 		GLuint image_format = GL_RGB;
-		if (components == Texture::GREY)
+		if (components == TEXTURE_CHANNELS::GREY)
 			image_format = GL_RED;
-		else if (components == Texture::RGB)
+		else if (components == TEXTURE_CHANNELS::RGB)
 			image_format = GL_RGB;
-		else if (components == Texture::RGBA)
+		else if (components == TEXTURE_CHANNELS::RGBA)
 			image_format = GL_RGBA;
 
 		glGenTextures(1, &objectID);
@@ -68,13 +68,13 @@ namespace ph_engine {
 		glGenTextures(1, &objectID);
 		bind();
 		switch (textureType) {
-			case Texture::COLOR:
+			case TEXTURE_TYPE::COLOR:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 				break;
-			case Texture::DEPTH:
+			case TEXTURE_TYPE::DEPTH:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 				break;
-			case Texture::STENCIL:
+			case TEXTURE_TYPE::STENCIL:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_STENCIL_INDEX, width, height, 0, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, NULL);
 				break;
 		}
@@ -87,14 +87,14 @@ namespace ph_engine {
 		GLenum format = GL_BGR;
 		int pitch = width;
 		switch (type){
-			case ph_engine::Texture::COLOR:
+			case TEXTURE_TYPE::COLOR:
 				format = GL_BGR;
 				pitch *= 3;
 				break;
-			case ph_engine::Texture::DEPTH:
+			case TEXTURE_TYPE::DEPTH:
 				format = GL_DEPTH_COMPONENT;
 				break;
-			case ph_engine::Texture::STENCIL:
+			case TEXTURE_TYPE::STENCIL:
 				format = GL_STENCIL_INDEX;
 				break;
 		}
@@ -124,7 +124,7 @@ namespace ph_engine {
 	}
 
 	Texture::TEXTURE_CHANNELS Texture::channelsCount(const char* path){
-		uint channels = 0;
+		uint channels = 1;
 		bool red = false, green = false, blue = false;
 
 		FREE_IMAGE_FORMAT img_type = FIF_UNKNOWN;
@@ -144,17 +144,15 @@ namespace ph_engine {
 		if (FreeImage_GetChannel(bitmap, FREE_IMAGE_COLOR_CHANNEL::FICC_BLUE))
 			blue = true;
 
-		if (red || green || blue)
-			channels = 1;
-
 		if (red && green && blue) {
 			channels = 3;
 
 			if (FreeImage_GetChannel(bitmap, FREE_IMAGE_COLOR_CHANNEL::FICC_ALPHA))
-				return Texture::RGBA;
+				return TEXTURE_CHANNELS::RGBA;
+			else
+				return TEXTURE_CHANNELS::RGB;
 		}
 
-		if (channels == 1) return Texture::GREY;
-		return Texture::RGB;
+		return TEXTURE_CHANNELS::GREY;
 	}
 }

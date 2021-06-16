@@ -15,17 +15,31 @@ namespace ph_engine {
 		public:
 			~Timer();
 
+			//start timer
 			void start();
-			double step();
+
+			//get current timer value
+			double timestamp();
+
+			//reset timer
 			void reset();
 			
 			typedef void(*timer_event)(void);
 
 			//Counting in another thread
+
+			//start MT-timer
 			void startMT();
+
+			//stop MT-timer
 			void stopMT();
+
+			//set MT-timer duration
 			void setDuration(int ms);
+
+			//set callback function for timer
 			void setTimerCallback(timer_event f);
+
 		private:
 			timer_event event = nullptr;
 			std::promise<void> barrier;

@@ -7,8 +7,8 @@
 namespace ph_engine {
 	class PHOTONENGINE_API Texture:public GLObject {
 		public:
-			enum TEXTURE_TYPE { COLOR, DEPTH, STENCIL };
-			enum TEXTURE_CHANNELS { GREY = 1, RGB = 3, RGBA = 4 };
+			enum class TEXTURE_TYPE { COLOR, DEPTH, STENCIL };
+			enum class TEXTURE_CHANNELS { GREY = 1, RGB = 3, RGBA = 4 };
 
 			Texture();
 
@@ -28,8 +28,10 @@ namespace ph_engine {
 			uint getID();
 
 		private:
-			int width, heigth, components;
+		    int width, heigth;
 			std::string path;
+			
+			TEXTURE_CHANNELS components;
 			TEXTURE_TYPE type = TEXTURE_TYPE::COLOR;
 
 			TEXTURE_CHANNELS channelsCount(const char* path);
