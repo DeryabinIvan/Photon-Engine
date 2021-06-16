@@ -9,11 +9,10 @@ namespace ph_engine {
 
 	Texture::Texture() {
 		target = GL_TEXTURE_2D;
-		glGenTextures(1, &objectID);
 	}
 
-	// Load texture from file
 	void Texture::loadFromFile(const char* path) {
+		this->path = path;
 		GLubyte* image_data = nullptr;
 
 		FREE_IMAGE_FORMAT img_type = FIF_UNKNOWN;
@@ -46,40 +45,69 @@ namespace ph_engine {
 
 		components = channelsCount(path);
 
-		GLuint image_format;
-		if (components == Texture::GREY)
+		GLuint image_format = GL_RGB;
+		if (components == TEXTURE_CHANNELS::GREY)
 			image_format = GL_RED;
-		else if (components == Texture::RGB)
+		else if (components == TEXTURE_CHANNELS::RGB)
 			image_format = GL_RGB;
-		else if (components == Texture::RGBA)
+		else if (components == TEXTURE_CHANNELS::RGBA)
 			image_format = GL_RGBA;
 
+		glGenTextures(1, &objectID);
 		bind();
-			glTexImage2D(target, 0, image_format, width, heigth, 0, GL_BGRA, GL_UNSIGNED_BYTE, image_data);
-			glGenerateMipmap(target);
-		unbind();
+		glTexImage2D(target, 0, image_format, width, heigth, 0, GL_BGRA, GL_UNSIGNED_BYTE, image_data);
+		glGenerateMipmap(target);
 
 		FreeImage_Unload(bitmap);
 	}
-
 	void Texture::emptyTexture(TEXTURE_TYPE textureType, uint width, uint height){
 		this->heigth = height;
 		this->width = width;
+		this->type = textureType;
 
+		glGenTextures(1, &objectID);
+		bind();
 		switch (textureType) {
-			case Texture::COLOR:
+			case TEXTURE_TYPE::COLOR:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 				break;
-			case Texture::DEPTH:
+			case TEXTURE_TYPE::DEPTH:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 				break;
-			case Texture::STENCIL:
+			case TEXTURE_TYPE::STENCIL:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_STENCIL_INDEX, width, height, 0, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, NULL);
 				break;
 		}
 		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	void Texture::save(const char* path){
+		GLubyte* pixels = new GLubyte[width*heigth * 3];
+		GLenum format = GL_BGR;
+		int pitch = width;
+		switch (type){
+			case TEXTURE_TYPE::COLOR:
+				format = GL_BGR;
+				pitch *= 3;
+				break;
+			case TEXTURE_TYPE::DEPTH:
+				format = GL_DEPTH_COMPONENT;
+				break;
+			case TEXTURE_TYPE::STENCIL:
+				format = GL_STENCIL_INDEX;
+				break;
+		}
+
+		bind();
+		glReadPixels(0, 0, width, heigth, format, GL_UNSIGNED_BYTE, pixels);
+
+		FIBITMAP* image = FreeImage_ConvertFromRawBits(pixels, width, heigth, pitch,
+			24, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
+		FreeImage_Save(FIF_PNG, image, path);
+		FreeImage_Unload(image);
+
+		delete[] pixels;
 	}
 
 	void Texture::activeTexture(uint num) {
@@ -91,15 +119,12 @@ namespace ph_engine {
 	void Texture::bind() {
 		glBindTexture(target, objectID);
 	}
-	void Texture::unbind() {
-		glBindTexture(target, 0);
-	}
 	uint Texture::getID(){
 		return objectID;
 	}
 
 	Texture::TEXTURE_CHANNELS Texture::channelsCount(const char* path){
-		uint channels = 0;
+		uint channels = 1;
 		bool red = false, green = false, blue = false;
 
 		FREE_IMAGE_FORMAT img_type = FIF_UNKNOWN;
@@ -119,17 +144,15 @@ namespace ph_engine {
 		if (FreeImage_GetChannel(bitmap, FREE_IMAGE_COLOR_CHANNEL::FICC_BLUE))
 			blue = true;
 
-		if (red || green || blue)
-			channels = 1;
-
 		if (red && green && blue) {
 			channels = 3;
 
 			if (FreeImage_GetChannel(bitmap, FREE_IMAGE_COLOR_CHANNEL::FICC_ALPHA))
-				return Texture::RGBA;
+				return TEXTURE_CHANNELS::RGBA;
+			else
+				return TEXTURE_CHANNELS::RGB;
 		}
 
-		if (channels == 1) return Texture::GREY;
-		if (channels == 3) return Texture::RGB;
+		return TEXTURE_CHANNELS::GREY;
 	}
 }

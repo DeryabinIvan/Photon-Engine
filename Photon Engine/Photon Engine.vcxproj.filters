@@ -33,9 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Photon Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files\low-level\dll-stuff</Filter>
     </ClInclude>
@@ -72,9 +69,6 @@
     <ClInclude Include="Model.h">
       <Filter>Header Files\high-level</Filter>
     </ClInclude>
-    <ClInclude Include="Config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Header Files\high-level</Filter>
     </ClInclude>
@@ -86,9 +80,6 @@
     </ClInclude>
     <ClInclude Include="System.h">
       <Filter>Header Files\low-level</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameBuffer.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderBuffer.h">
       <Filter>Header Files</Filter>
@@ -108,11 +99,23 @@
     <ClInclude Include="VertexArray.h">
       <Filter>Header Files\low-level</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameBuffer.h">
+      <Filter>Header Files\low-level</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files\low-level\dll-stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Photon Engine.h">
+      <Filter>Header Files\low-level\dll-stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDataOffsets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Photon Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files\low-level\dll-stuff</Filter>
     </ClCompile>
@@ -155,9 +158,6 @@
     <ClCompile Include="System.cpp">
       <Filter>Source Files\low-level</Filter>
     </ClCompile>
-    <ClCompile Include="FrameBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -172,6 +172,18 @@
     </ClCompile>
     <ClCompile Include="VertexArray.cpp">
       <Filter>Source Files\low-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameBuffer.cpp">
+      <Filter>Source Files\low-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Photon Engine.cpp">
+      <Filter>Source Files\low-level\dll-stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDataOffsets.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

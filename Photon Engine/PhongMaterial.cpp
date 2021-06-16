@@ -1,9 +1,12 @@
 #include "PhongMaterial.h"
 
 namespace ph_engine {
-	PhongMaterial::~PhongMaterial(){
-		if (diff) delete diff;
-		if (spec) delete spec;
+	PhongMaterial::PhongMaterial(){
+		ambient = glm::vec3(.2f);
+		diffuse = glm::vec3(.2f);
+		specular = glm::vec3(.2f);
+
+		shininess = 1;
 	}
 
 	void PhongMaterial::setAmbient(float r, float g, float b){
@@ -30,38 +33,43 @@ namespace ph_engine {
 	}
 
 	void PhongMaterial::loadDiffuse(std::string path, int block){
-		diff = new Texture();
-		diff->loadFromFile(path.c_str());
+		diffuseMap.loadFromFile(path.c_str());
 		diffBlock = block;
-
-		diffuse = glm::vec3(-1);
 	}
 	void PhongMaterial::loadSpecular(std::string path, int block){
-		spec = new Texture();
-		spec->loadFromFile(path.c_str());
+		specularMap.loadFromFile(path.c_str());
 		specBlock = block;
-
-		specular = glm::vec3(-1);
 	}
 
 	void PhongMaterial::activeDiffuse(){
-		diff->activeTexture(diffBlock);
-		diff->bind();
+		diffuseMap.activeTexture(diffBlock);
+		diffuseMap.bind();
+	}
+	void PhongMaterial::activeSpecular(){
+		specularMap.activeTexture(specBlock);
+		specularMap.bind();
 	}
 
-	void PhongMaterial::activeSpecular(){
-		spec->activeTexture(specBlock);
-		spec->bind();
+	bool PhongMaterial::haveDiffuseMap() const{
+		return (diffBlock != -1);
+	}
+
+	bool PhongMaterial::haveSpecularMap() const{
+		return (specBlock != -1);
 	}
 
 	void PhongMaterial::sendInShader(ShaderProgram& program, const std::string name){
 		program.setVec3(name + ".ambient", ambient);
 		program.setFloat(name + ".shininess", shininess);
 
-		if(diffuse.x != -1) program.setVec3(name + ".diffuse", diffuse);
-		else program.setInt(name + ".diffuse", diffBlock);
+		if(diffBlock == -1)
+			program.setVec3(name + ".diffuse", diffuse);
+		else
+			program.setInt(name + ".diffuse", diffBlock);
 
-		if(specular.x != -1) program.setVec3(name + ".specular", specular);
-		else program.setInt(name + ".specular", specBlock);
+		if(specBlock == -1)
+			program.setInt(name + ".specular", diffBlock);
+		else
+			program.setInt(name + ".specular", specBlock);
 	}
 }

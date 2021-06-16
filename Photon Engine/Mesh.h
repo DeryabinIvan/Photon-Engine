@@ -7,16 +7,19 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "ElementBuffer.h"
+#include "MeshDataOffsets.h"
+
 #include "ShaderProgram.h"
 #include "Texture.h"
+#include "PhongMaterial.h"
 
 #include "assimp/scene.h"
 
-using std::vector;
-using std::string;
-using std::stringstream;
-
 namespace ph_engine {
+	using std::vector;
+	using std::string;
+	using std::stringstream;
+
 	class PHOTONENGINE_API Mesh {
 		public:
 			struct Vertex {
@@ -25,18 +28,22 @@ namespace ph_engine {
 				glm::vec2 texCoord;
 			};
 
-			vector<Vertex> vert;
-			vector<uint> ind;
-			vector<Texture> tex;
+			Mesh(MeshDataHelper off, const void *raw_data, size_t elements);
+			Mesh(vector<Vertex> &vert, vector<uint> &ind);
 
-			Mesh(vector<Vertex> v, vector<uint> i, vector<Texture> t);
+			void loadTextures(string diffuse, string specular);
+
 			void draw(ShaderProgram& program);
 
 		private:
+			uint indSize = 0;
+			PhongMaterial material;
+
+			bool isCustom;
+			uint vertexCount = 0;
+
 			VertexArray* vao;
 			VertexBuffer* vbo;
 			ElementBuffer* ebo;
-
-			void setup();
 	};
 }

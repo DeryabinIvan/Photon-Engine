@@ -2,56 +2,145 @@
 
 #include "GLEW/glew.h"
 
-ph_engine::Mesh::Mesh(vector<Vertex> v, vector<uint> i, vector<Texture> t) {
-	vert = v;
-	ind = i;
-	tex = t;
+namespace ph_engine {
+	Mesh::Mesh(vector<Vertex> &vert, vector<uint> &ind){
+		isCustom = false;
 
-	setup();
-}
+		indSize = ind.size();
 
-void ph_engine::Mesh::draw(ShaderProgram& program) {
-	for (uint i = 0; i < tex.size(); i++) {
-		Texture::activeTexture(i);
+		vbo = new VertexBuffer();
+		vao = new VertexArray();
+		ebo = new ElementBuffer();
 
-		Texture::TEXTURE_TYPE name = tex[i].getType();
+		vao->bind();
+		vbo->bind();
+		vbo->load(vert.size() * sizeof(Vertex), &vert[0]);
 
-		program.setInt("material.diffuse", i);
-		
-		tex[i].bind();
+		ebo->bind();
+		ebo->load(ind.size() * sizeof(uint), &ind[0]);
+
+		//positions
+		vbo->enableAttrib(0);
+		vbo->addVertexAttrib(0, 3, GL_FALSE, sizeof(Vertex), static_cast<void*>(0));
+
+		//normals
+		vbo->enableAttrib(1);
+		vbo->addVertexAttrib(1, 3, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, normal)));
+
+		//texture coordinates
+		vbo->enableAttrib(2);
+		vbo->addVertexAttrib(2, 2, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, texCoord)));
+		vao->unbind();
+		ebo->unbind();
 	}
-	Texture::activeTexture(0);
 
-	vao->bind();
-	glDrawElements(GL_TRIANGLES, ind.size(), GL_UNSIGNED_INT, 0);
-	vao->unbind();
-}
+	//???
+	Mesh::Mesh(MeshDataHelper off, const void *raw_data, size_t size) {
+		isCustom = true;
 
-void ph_engine::Mesh::setup() {
-	vbo = new VertexBuffer();
-	vao = new VertexArray();
-	ebo = new ElementBuffer();
+		vbo = new VertexBuffer();
+		vao = new VertexArray();
 
-	vao->bind();
-	vbo->bind();
-	vbo->load(vert.size() * sizeof(Vertex), &vert[0]);
+		vector<float> vec_ind, vec_data;
+		bool _ind = off.hasIndex();
+		uint step_offset = off.getVertex().second + off.getNormal().second + off.getColor().second + off.getTexture().second;
 
-	ebo->bind();
-	ebo->load(ind.size() * sizeof(uint), &ind[0]);
+		float *_data = (( float *) raw_data);
 
-	//positions
-	vbo->enableAttrib(0);
-	vbo->addVertexAttrib(0, 3, GL_FALSE, sizeof(Vertex), (void*) 0);
+		if (_ind) {
+			ebo = new ElementBuffer();
 
-	//normals
-	vbo->enableAttrib(1);
-	vbo->addVertexAttrib(1, 3, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+			//parsing raw data
+			for (int i = 0; i < size; i += off.getIndex().first)
+				vec_ind.push_back(_data[i]);
 
-	//texture coordinates
-	vbo->enableAttrib(2);
-	vbo->addVertexAttrib(2, 2, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
+			indSize = vec_ind.size();
+		}
+		
+		if (_ind) {
+			for (int i = 0; i < size; i++)
+				if (i % off.getIndex().first)
+					vec_data.push_back(_data[i]);
+		} else {
+			for (int i = 0; i < size; i++) 
+				vec_data.push_back(_data[i]);
+		}
 
-	vao->unbind();
+		vertexCount = vec_data.size() / step_offset;
 
-	ebo->unbind();
+		//init VAO, VBO, EBO...
+		int attrib = 0;
+		uint stride = sizeof(float) * step_offset;
+
+		vao->bind();
+		vbo->bind();
+
+		vbo->load(vec_data.size() * sizeof(float), &vec_data[0]);
+
+		if (_ind) {
+			ebo->bind();
+			ebo->load(vec_ind.size() * sizeof(uint), &vec_ind[0]);
+		}
+
+		//position
+		if (off.hasVertex()) {
+			vbo->enableAttrib(attrib);
+			vbo->addVertexAttrib(attrib++, off.getVertex().second, false, stride, static_cast<void *>(0));
+		}
+
+		//normal
+		if (off.hasNormal()) {
+			vbo->enableAttrib(attrib);
+			vbo->addVertexAttrib(attrib++, off.getNormal().second, false, stride, reinterpret_cast<void *>(off.getNormal().first * sizeof(float)));
+		}
+
+		//color
+		if (off.hasColor()) {
+			vbo->enableAttrib(attrib);
+			vbo->addVertexAttrib(attrib++, off.getColor().second, false, stride, reinterpret_cast<void *>(off.getColor().first * sizeof(float)));
+		}
+
+		//texture
+		if (off.hasTexture()) {
+			vbo->enableAttrib(attrib);
+			vbo->addVertexAttrib(attrib++, off.getTexture().second, false, stride, reinterpret_cast<void *>(off.getTexture().first * sizeof(float)));
+		}
+
+		if (_ind)
+			ebo->unbind();
+
+		vbo->unbind();
+		vao->unbind();
+	}
+
+	void Mesh::loadTextures(string diffuse, string specular){
+		if (!diffuse.empty())
+			material.loadDiffuse(diffuse, 0);
+
+		if (!specular.empty())
+			material.loadSpecular(specular, 1);
+
+		material.setShininess(16);
+	}
+
+	void Mesh::draw(ShaderProgram& program) {
+		if (!isCustom) {
+			material.activeDiffuse();
+			if (material.haveSpecularMap())
+				material.activeSpecular();
+
+			material.sendInShader(program, "material");
+		}
+		Texture::activeTexture(0);
+
+		if (isCustom && !indSize) {
+			vao->bind();
+			glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+			vao->unbind();
+		} else {
+			vao->bind();
+			glDrawElements(GL_TRIANGLES, indSize, GL_UNSIGNED_INT, 0);
+			vao->unbind();
+		}
+	}
 }
