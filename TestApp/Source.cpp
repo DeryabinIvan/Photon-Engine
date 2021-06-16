@@ -155,7 +155,7 @@ int main() {
 
 		if (isFreeCam) {
 			if (secondPass) {
-				player.setSpeed(4.f / (float)frames);
+				player.setSpeed(1.f / (frames * 10));
 				secondPass = false;
 			}
 			player.move(keyboard);
@@ -211,7 +211,6 @@ int main() {
 
 		if (keyboard.keyPressedOnce(Keyboard::KEY_F12)) {
 			color.save("color_buffer.png");
-			depth.save("depth_buffer.png");
 			std::cerr << "F12 pressed" << std::endl;
 		}
 
