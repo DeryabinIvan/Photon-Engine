@@ -6,7 +6,6 @@ int frames = 0;
 bool secondPass = false;
 
 void frameEvent() {
-	cout << "FPS: " << frames << endl;
 	frames = 0;
 	secondPass = true;
 }
@@ -46,7 +45,7 @@ int main() {
 	
 	window.hideCursor();
 
-	glm::vec3 position = glm::vec3(0, 1, 0);
+	glm::vec3 position = glm::vec3(0, 1, 1), viewDirection;
 
 	Player player(position, 4.0f / 144.0f);
 	Camera camera(position, glm::vec3(0, 0, -3));
@@ -72,11 +71,8 @@ int main() {
 	spot.setSpecular(1.f);
 	spot.setAttenuation(0.032f, 0.09f, 1.f);
 
-	const std::string path = "res/model/";
-
 	Model cube;
-
-	cube.load(path + "cube/cube.obj");
+	cube.loadModel("res/model/cube/cube.obj");
 	cube.translate(0, 0, -3);
 
 	Shader fragScreen, vertScreen;
@@ -102,16 +98,40 @@ int main() {
 		 1.0f,  1.0f,  1.0f, 1.0f
 	};
 
-	MeshDataHelper off;
-	off.setVertex(0, 2);
-	off.setTexture(2, 2);
+	float floorVertices[] = {
+	//  |   positions     |   normal   | texture |
+		-1.f, -1.f,  1.f, 0.f, 1.f, 0.f, 0.f, 1.f,
+		-1.f, -1.f, -1.f, 0.f, 1.f, 0.f, 0.f, 0.f,
+		 1.f, -1.f, -1.f, 0.f, 1.f, 0.f, 1.f, 0.f,
+	//  |    positions    |   normal   | texture |
+		-1.f, -1.f,  1.f, 0.f, 1.f, 0.f, 0.f, 1.f,
+		 1.f, -1.f, -1.f, 0.f, 1.f, 0.f, 1.f, 0.f,
+		 1.f, -1.f,  1.f, 0.f, 1.f, 0.f, 1.f, 1.f
+	};
 
-	Mesh plane(off, quadVertices, sizeof(quadVertices) / sizeof(float));
+	MeshDataHelper quadOffsets, floorOffsets;
+	quadOffsets.setVertex(0, 2);
+	quadOffsets.setTexture(2, 2);
 
-	//RenderBuffer renderbuffer;
-	FrameBuffer framebuffer;
+	floorOffsets.setVertex(0, 3);
+	floorOffsets.setNormal(3, 3);
+	floorOffsets.setTexture(6, 2);
+
+	Mesh plane(quadOffsets, quadVertices, sizeof(quadVertices) / sizeof(float));
+
+	Mesh floor(floorOffsets, floorVertices, sizeof(floorVertices) / sizeof(float));
+	floor.loadTextures("res/model/floor.png", "res/model/floor.png");
+	 
+	floor.translate(0, 0, 0);
+	vec3 rotateAxis = vec3(1, 0, 0);
 
 	Texture color, depth;
+	FrameBuffer framebuffer;
+
+	/*RenderBuffer renderbuffer;
+	renderbuffer.bind();
+	renderbuffer.create(GL_DEPTH_COMPONENT24, width, height);
+	renderbuffer.bindBaseBuffer();*/
 
 	color.emptyTexture(Texture::TEXTURE_TYPE::COLOR, width, height);
 	depth.emptyTexture(Texture::TEXTURE_TYPE::DEPTH, width, height);
@@ -119,6 +139,8 @@ int main() {
 	framebuffer.bind();
 	framebuffer.attachTexture(color, FrameBuffer::AttachmentType::COLOR);
 	framebuffer.attachTexture(depth, FrameBuffer::AttachmentType::DEPTH);
+	//framebuffer.attachRenderBuffer(renderbuffer, GL_DEPTH_ATTACHMENT);
+
 	if (framebuffer.checkErrors()) {
 		cerr << "FRAMEBUFFER NOT COMPLETE" << endl;
 		System::printGLError();
@@ -130,6 +152,8 @@ int main() {
 	timer.setDuration(1000);
 	timer.setTimerCallback(frameEvent);
 	timer.startMT();
+
+	std::stringstream ss;
 
 	//Render loop
 	while (!window.shouldClose()) {
@@ -177,6 +201,15 @@ int main() {
 		}
 		
 		if (isFreeCam) {
+			position = player.getPosition();
+			viewDirection = player.getFrontVec();
+			
+			ss  << "Posistion. X: "       << position.x      << " Y: " << position.y      << " Z: " << position.z << " " 
+				<<  "View direction. X: " << viewDirection.x << " Y: " << viewDirection.y << " Z: " << viewDirection.z;
+
+			window.setTitle(ss.str());
+			ss.str("");
+
 			program.setMat4("view", player.getViewMatrix());
 
 			spot.setPosition(player.getPosition());
@@ -196,8 +229,12 @@ int main() {
 		spot.sendInShader(program, "s");
 
 		program.setMat4("projection", projection);
+
 		program.setMat4("model", cube.getModelMatrix());
 		cube.draw(program);
+
+		program.setMat4("model", floor.getModelMatrix());
+		floor.draw(program);
 
 		//screen render
 		framebuffer.bindBaseBuffer();

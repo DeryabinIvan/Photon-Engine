@@ -81,9 +81,6 @@
     <ClInclude Include="System.h">
       <Filter>Header Files\low-level</Filter>
     </ClInclude>
-    <ClInclude Include="RenderBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PhongMaterial.h">
       <Filter>Header Files\high-level</Filter>
     </ClInclude>
@@ -111,8 +108,14 @@
     <ClInclude Include="Photon Engine.h">
       <Filter>Header Files\low-level\dll-stuff</Filter>
     </ClInclude>
+    <ClInclude Include="ChangebleModel.h">
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
     <ClInclude Include="MeshDataOffsets.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\high-level</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderBuffer.h">
+      <Filter>Header Files\low-level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -143,9 +146,6 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files\high-level</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\low-level</Filter>
-    </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\high-level</Filter>
     </ClCompile>
@@ -157,9 +157,6 @@
     </ClCompile>
     <ClCompile Include="System.cpp">
       <Filter>Source Files\low-level</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderBuffer.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PhongMaterial.cpp">
       <Filter>Source Files\high-level</Filter>
@@ -182,8 +179,17 @@
     <ClCompile Include="Photon Engine.cpp">
       <Filter>Source Files\low-level\dll-stuff</Filter>
     </ClCompile>
+    <ClCompile Include="ChangebleModel.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
     <ClCompile Include="MeshDataOffsets.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\high-level</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderBuffer.cpp">
+      <Filter>Source Files\low-level</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

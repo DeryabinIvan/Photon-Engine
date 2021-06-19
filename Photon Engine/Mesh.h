@@ -8,6 +8,7 @@
 #include "VertexBuffer.h"
 #include "ElementBuffer.h"
 #include "MeshDataOffsets.h"
+#include "ChangebleModel.h"
 
 #include "ShaderProgram.h"
 #include "Texture.h"
@@ -20,7 +21,7 @@ namespace ph_engine {
 	using std::string;
 	using std::stringstream;
 
-	class PHOTONENGINE_API Mesh {
+	class PHOTONENGINE_API Mesh : public ChangebleModel {
 		public:
 			struct Vertex {
 				glm::vec3 position;
@@ -38,8 +39,7 @@ namespace ph_engine {
 		private:
 			uint indSize = 0;
 			PhongMaterial material;
-
-			bool isCustom;
+			
 			uint vertexCount = 0;
 
 			VertexArray* vao;

@@ -3,9 +3,7 @@
 #include "GLEW/glew.h"
 
 namespace ph_engine {
-	Mesh::Mesh(vector<Vertex> &vert, vector<uint> &ind){
-		isCustom = false;
-
+	Mesh::Mesh(vector<Vertex>& vert, vector<uint>& ind) {
 		indSize = ind.size();
 
 		vbo = new VertexBuffer();
@@ -35,9 +33,7 @@ namespace ph_engine {
 	}
 
 	//???
-	Mesh::Mesh(MeshDataHelper off, const void *raw_data, size_t size) {
-		isCustom = true;
-
+	Mesh::Mesh(MeshDataHelper off, const void* raw_data, size_t size) {
 		vbo = new VertexBuffer();
 		vao = new VertexArray();
 
@@ -45,7 +41,7 @@ namespace ph_engine {
 		bool _ind = off.hasIndex();
 		uint step_offset = off.getVertex().second + off.getNormal().second + off.getColor().second + off.getTexture().second;
 
-		float *_data = (( float *) raw_data);
+		float* _data = ((float*) raw_data);
 
 		if (_ind) {
 			ebo = new ElementBuffer();
@@ -56,13 +52,13 @@ namespace ph_engine {
 
 			indSize = vec_ind.size();
 		}
-		
+
 		if (_ind) {
 			for (int i = 0; i < size; i++)
 				if (i % off.getIndex().first)
 					vec_data.push_back(_data[i]);
 		} else {
-			for (int i = 0; i < size; i++) 
+			for (int i = 0; i < size; i++)
 				vec_data.push_back(_data[i]);
 		}
 
@@ -85,25 +81,25 @@ namespace ph_engine {
 		//position
 		if (off.hasVertex()) {
 			vbo->enableAttrib(attrib);
-			vbo->addVertexAttrib(attrib++, off.getVertex().second, false, stride, static_cast<void *>(0));
+			vbo->addVertexAttrib(attrib++, off.getVertex().second, false, stride, static_cast<void*>(0));
 		}
 
 		//normal
 		if (off.hasNormal()) {
 			vbo->enableAttrib(attrib);
-			vbo->addVertexAttrib(attrib++, off.getNormal().second, false, stride, reinterpret_cast<void *>(off.getNormal().first * sizeof(float)));
+			vbo->addVertexAttrib(attrib++, off.getNormal().second, false, stride, reinterpret_cast<void*>(off.getNormal().first * sizeof(float)));
 		}
 
 		//color
 		if (off.hasColor()) {
 			vbo->enableAttrib(attrib);
-			vbo->addVertexAttrib(attrib++, off.getColor().second, false, stride, reinterpret_cast<void *>(off.getColor().first * sizeof(float)));
+			vbo->addVertexAttrib(attrib++, off.getColor().second, false, stride, reinterpret_cast<void*>(off.getColor().first * sizeof(float)));
 		}
 
 		//texture
 		if (off.hasTexture()) {
 			vbo->enableAttrib(attrib);
-			vbo->addVertexAttrib(attrib++, off.getTexture().second, false, stride, reinterpret_cast<void *>(off.getTexture().first * sizeof(float)));
+			vbo->addVertexAttrib(attrib++, off.getTexture().second, false, stride, reinterpret_cast<void*>(off.getTexture().first * sizeof(float)));
 		}
 
 		if (_ind)
@@ -113,7 +109,7 @@ namespace ph_engine {
 		vao->unbind();
 	}
 
-	void Mesh::loadTextures(string diffuse, string specular){
+	void Mesh::loadTextures(string diffuse, string specular) {
 		if (!diffuse.empty())
 			material.loadDiffuse(diffuse, 0);
 
@@ -124,16 +120,17 @@ namespace ph_engine {
 	}
 
 	void Mesh::draw(ShaderProgram& program) {
-		if (!isCustom) {
+		if (material.haveDiffuseMap()) {
 			material.activeDiffuse();
 			if (material.haveSpecularMap())
 				material.activeSpecular();
 
 			material.sendInShader(program, "material");
 		}
+
 		Texture::activeTexture(0);
 
-		if (isCustom && !indSize) {
+		if (indSize == 0) {
 			vao->bind();
 			glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 			vao->unbind();

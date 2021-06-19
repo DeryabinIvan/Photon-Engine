@@ -101,6 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ChangebleModel.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ElementBuffer.h" />
     <ClInclude Include="FrameBuffer.h" />
@@ -130,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ChangebleModel.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="ElementBuffer.cpp" />

@@ -31,6 +31,7 @@ namespace ph_engine {
 
 			~Window();
 
+			void setTitle(const std::string title);
 			void setActive();
 			void swapBuffer();
 

@@ -4,7 +4,7 @@
 
 namespace ph_engine {
 	class PHOTONENGINE_API MeshDataHelper {
-		bool is_vert, is_norm, is_col, is_tex, is_ind;
+		bool has_vert, has_norm, has_color, has_texture, has_ind;
 		std::pair<uint, uint> vertex, normal, color, texture, index;
 
 		public:

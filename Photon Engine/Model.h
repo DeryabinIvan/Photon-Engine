@@ -2,6 +2,7 @@
 
 #include "Config.h"
 
+#include "ChangebleModel.h"
 #include "Mesh.h"
 #include "PhongMaterial.h"
 #include "ShaderProgram.h"
@@ -17,23 +18,17 @@ using std::vector;
 using std::string;
 
 namespace ph_engine {
-	class PHOTONENGINE_API Model {
+	class PHOTONENGINE_API Model : public ChangebleModel {
 		public:
 			Model();
 			~Model();
 			void draw(ShaderProgram& program);
-			void load(string path);
+			void loadModel(string path);
 
-			void scale(float sx, float sy, float sz);
-			void scale(float scale);
-			void translate(float x, float y, float z);
-			void rotate(float angle, float axisX, float axisY, float axisZ);
-			const glm::mat4 getModelMatrix();
 		private:
 			vector<Mesh> meshes;
 			vector<string> textures_loaded;
 			string dir;
-			glm::mat4 model;
 
 			void processNode(aiNode* node, const aiScene* scene);
 			Mesh processMesh(aiMesh* mesh, const aiScene* scene);

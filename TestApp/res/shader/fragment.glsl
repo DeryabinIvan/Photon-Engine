@@ -99,10 +99,11 @@ vec3 spotLight(Light light) {
 
 void main(){
 	//Result color
-	vec3 FragColor = texture(material.diffuse, TexCoords).rgb;
+	vec3 DiffuseColor = texture(material.diffuse, TexCoords).rgb;
+	vec3 SpecColor = texture(material.specular, TexCoords).rgb;
 
 	vec3 resultLight = dotLight(l) + spotLight(s);
 
-	resultColor = vec4(resultLight * FragColor, 1);
-	//resultColor = vec4(FragPos, 1);
+	resultColor = vec4(resultLight * DiffuseColor, 1);
+	//resultColor = vec4(DiffuseColor.r, SpecColor.g, 0, 1);
 }

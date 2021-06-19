@@ -6,7 +6,7 @@
 
 namespace ph_engine {
 	Model::Model(){
-		model = glm::mat4(1.f);
+
 	}
 
 	Model::~Model(){
@@ -18,7 +18,7 @@ namespace ph_engine {
 			meshes[i].draw(program);
 	}
 
-	void Model::load(string path) {
+	void Model::loadModel(string path) {
 		Assimp::Importer import;
 		const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
 
@@ -36,22 +36,6 @@ namespace ph_engine {
 			std::cout << textures_loaded[j] << std::endl;
 		}
 #endif
-	}
-
-	void Model::scale(float sx, float sy, float sz){
-		model = glm::scale(model, glm::vec3(sx, sy, sz));
-	}
-	void Model::scale(float s) {
-		model = glm::scale(model, glm::vec3(s, s, s));
-	}
-	void Model::translate(float x, float y, float z){
-		model = glm::translate(model, glm::vec3(x, y, z));
-	}
-	void Model::rotate(float angle, float axisX, float axisY, float axisZ){
-		model = glm::rotate(model, angle, glm::vec3(axisX, axisY, axisZ));
-	}
-	const glm::mat4 Model::getModelMatrix(){
-		return model;
 	}
 
 	void Model::processNode(aiNode* node, const aiScene* scene) {

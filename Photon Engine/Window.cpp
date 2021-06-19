@@ -56,6 +56,10 @@ namespace ph_engine {
 		glfwDestroyWindow(id);
 	}
 
+	void Window::setTitle(const std::string title) {
+		glfwSetWindowTitle(id, title.c_str());
+	}
+
 	void Window::setActive() {
 		glfwMakeContextCurrent(id);
 	}

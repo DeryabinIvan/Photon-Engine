@@ -15,7 +15,7 @@ namespace ph_engine {
 		return *(new Color(this->color + c.color));
 	}
 	const Color& Color::operator*(const Color& c) const {
-		return *(new Color(this->color*c.color));
+		return *(new Color(this->color * c.color));
 	}
 	const glm::vec4 & Color::toVec4() const {
 		return color;
