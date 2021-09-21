@@ -30,19 +30,17 @@ namespace ph_engine {
 			};
 
 			Mesh(MeshDataHelper &off, const void* raw_data, size_t elements);
-			Mesh(vector<Vertex> &vert, vector<uint> &ind);
+			Mesh(vector<Vertex> &vert, vector<int> &ind);
 
-			void loadTextures(string diffuse, string specular);
-			void setDiffuse(Texture d);
-			void setSpecular(Texture s);
+			void loadTexture(Texture::TEXTURE_TYPE type, string path, int block);
 
 			void draw(ShaderProgram& program);
 
 		private:
-			uint indSize = 0;
+			size_t indSize = 0;
 			PhongMaterial material;
 			
-			uint vertexCount = 0;
+			size_t vertexCount = 0;
 
 			VertexArray* vao;
 			VertexBuffer* vbo;

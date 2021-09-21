@@ -11,12 +11,12 @@ namespace ph_engine {
 		glfwSetTime(time);
 	}
 
-	uint System::getGLError(){
+	int System::getGLError(){
 		return glGetError();
 	}
 	void System::printGLError(){
 #ifdef _DEBUG
-		uint error = getGLError();
+		int error = getGLError();
 		if (error != GL_NO_ERROR) {
 			std::cerr << "OpenGL error: ";
 			switch (error) {

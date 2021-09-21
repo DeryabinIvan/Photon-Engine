@@ -14,7 +14,7 @@ namespace ph_engine {
 	}
 
 	void Model::draw(ShaderProgram& program) {
-		for (uint i = 0; i < meshes.size(); i++)
+		for (int i = 0; i < meshes.size(); i++)
 			meshes[i].draw(program);
 	}
 
@@ -39,10 +39,9 @@ namespace ph_engine {
 	}
 
 	void Model::processNode(aiNode* node, const aiScene* scene) {
-		for (uint i = 0; i < node->mNumMeshes; i++) {
+		for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			Mesh current = processMesh(mesh, scene);
-			meshes.push_back(current);
 
 			if (mesh->mMaterialIndex) {
 				aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
@@ -51,18 +50,23 @@ namespace ph_engine {
 				diffusePath = getTexturePath(material, aiTextureType_DIFFUSE);
 				specularPath = getTexturePath(material, aiTextureType_SPECULAR);
 
-				meshes.back().loadTextures(diffusePath, specularPath);
+				//meshes.back().loadTextures(diffusePath, specularPath);
+				current.loadTexture(Texture::TEXTURE_TYPE::DIFFUSE, diffusePath, 0);
+				current.loadTexture(Texture::TEXTURE_TYPE::SPECULAR, specularPath, 1);
 			}
+
+			meshes.push_back(current);
 		}
 
-		for (uint i = 0; i < node->mNumChildren; i++)
+		for (unsigned int i = 0; i < node->mNumChildren; i++)
 			processNode(node->mChildren[i], scene);
 	}
+
 	Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 		vector<Mesh::Vertex> verticies;
-		vector<uint> indices;
+		vector<int> indices;
 
-		for (uint i = 0; i < mesh->mNumVertices; i++) {
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 			Mesh::Vertex vertex;
 			
 			glm::vec3 tmp;
@@ -88,9 +92,10 @@ namespace ph_engine {
 			verticies.push_back(vertex);
 		}
 
-		for (uint i = 0; i < mesh->mNumFaces; i++) {
+		for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
 			aiFace face = mesh->mFaces[i];
-			for (uint j = 0; j < face.mNumIndices; j++)
+
+			for (unsigned int j = 0; j < face.mNumIndices; j++)
 				indices.push_back(face.mIndices[j]);
 		}
 		

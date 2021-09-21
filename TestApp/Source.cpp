@@ -30,8 +30,8 @@ int main() {
 	mouse.setSensitivity(.5f);
 
 	Shader vert, frag;
-	vert.loadFromFile("res/shader/vertex.glsl", Shader::VERTEX);
-	frag.loadFromFile("res/shader/fragment.glsl", Shader::FRAGMENT);
+	vert.loadFromFile("res/shader/main.vert", Shader::VERTEX);
+	frag.loadFromFile("res/shader/main.frag", Shader::FRAGMENT);
 
 	ShaderProgram program;
 	program.addShader(vert);
@@ -74,8 +74,8 @@ int main() {
 	cube.translate(0, 0, -3);
 
 	Shader fragScreen, vertScreen;
-	fragScreen.loadFromFile("res/shader/framebuffer_fs.glsl", Shader::FRAGMENT);
-	vertScreen.loadFromFile("res/shader/framebuffer_vs.glsl", Shader::VERTEX);
+	fragScreen.loadFromFile("res/shader/postprocessing.frag", Shader::FRAGMENT);
+	vertScreen.loadFromFile("res/shader/postprocessing.vert", Shader::VERTEX);
 
 	ShaderProgram screenProcessing;
 	screenProcessing.addShader(vertScreen);
@@ -119,7 +119,9 @@ int main() {
 	Mesh screenMesh(quadOffsets, quadVertices, sizeof(quadVertices) / sizeof(float));
 
 	Mesh floorMesh(floorOffsets, floorVertices, sizeof(floorVertices) / sizeof(float));
-	floorMesh.loadTextures("res/model/wood wicker/basecolor.png", "res/model/wood wicker/ambientOcclusion.png");
+	floorMesh.loadTexture(Texture::TEXTURE_TYPE::DIFFUSE, "res/model/wood wicker/basecolor.png", 0);
+	floorMesh.loadTexture(Texture::TEXTURE_TYPE::SPECULAR, "res/model/wood wicker/ambientOcclusion.png", 1);
+	floorMesh.loadTexture(Texture::TEXTURE_TYPE::NORMAL, "res/model/wood wicker/normal.png", 2);
 
 	floorMesh.translate(0, 0, 0);
 	vec3 rotateAxis = vec3(1, 0, 0);
@@ -132,8 +134,8 @@ int main() {
 	renderbuffer.create(GL_DEPTH_COMPONENT24, width, height);
 	renderbuffer.bindBaseBuffer();*/
 
-	colorTex.emptyTexture(Texture::TEXTURE_TYPE::COLOR, width, height);
-	depthTex.emptyTexture(Texture::TEXTURE_TYPE::DEPTH, width, height);
+	colorTex.emptyTexture(Texture::TEXTURE_COLOR_TYPE::COLOR, width, height);
+	depthTex.emptyTexture(Texture::TEXTURE_COLOR_TYPE::DEPTH, width, height);
 
 	framebuffer.bind();
 	framebuffer.attachTexture(colorTex, FrameBuffer::AttachmentType::COLOR);

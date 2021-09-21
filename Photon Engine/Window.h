@@ -38,11 +38,11 @@ namespace ph_engine {
 			//default clear funtion
 			void clear();
 			void clearColor(Color clearColor);
-			void clearBuffers(uint buffersList);
+			void clearBuffers(int buffersList);
 
-			void draw(Render_Mode mode, uint first, uint count);
-			void enableFeature(uint glFeature);
-			void disableFeature(uint glFeature);
+			void draw(Render_Mode mode, int first, int count);
+			void enableFeature(int glFeature);
+			void disableFeature(int glFeature);
 
 			bool shouldClose();
 			void close();

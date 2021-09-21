@@ -70,7 +70,7 @@ namespace ph_engine {
 		FreeImage_Unload(bitmap);
 	}
 
-	void Texture::emptyTexture(TEXTURE_TYPE textureType, uint width, uint height){
+	void Texture::emptyTexture(TEXTURE_COLOR_TYPE textureType, int width, int height){
 		this->heigth = height;
 		this->width = width;
 		this->type = textureType;
@@ -78,15 +78,15 @@ namespace ph_engine {
 		glGenTextures(1, &objectID);
 		bind();
 		switch (textureType) {
-			case TEXTURE_TYPE::COLOR:
+			case TEXTURE_COLOR_TYPE::COLOR:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 				break;
 
-			case TEXTURE_TYPE::DEPTH:
+			case TEXTURE_COLOR_TYPE::DEPTH:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 				break;
 
-			case TEXTURE_TYPE::STENCIL:
+			case TEXTURE_COLOR_TYPE::STENCIL:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_STENCIL_INDEX, width, height, 0, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, NULL);
 				break;
 		}
@@ -100,16 +100,16 @@ namespace ph_engine {
 		GLenum format = GL_BGR;
 		int pitch = width;
 		switch (type){
-			case TEXTURE_TYPE::COLOR:
+			case TEXTURE_COLOR_TYPE::COLOR:
 				format = GL_BGR;
 				pitch *= 3;
 				break;
 
-			case TEXTURE_TYPE::DEPTH:
+			case TEXTURE_COLOR_TYPE::DEPTH:
 				format = GL_DEPTH_COMPONENT;
 				break;
 
-			case TEXTURE_TYPE::STENCIL:
+			case TEXTURE_COLOR_TYPE::STENCIL:
 				format = GL_STENCIL_INDEX;
 				break;
 		}
@@ -125,7 +125,7 @@ namespace ph_engine {
 		delete[] pixels;
 	}
 
-	void Texture::activeTexture(uint num) {
+	void Texture::activeTexture(int num) {
 		if (num >= 0 && num <= GL_MAX_TEXTURE_UNITS) {
 			glActiveTexture(GL_TEXTURE0 + num);
 		}
@@ -135,7 +135,7 @@ namespace ph_engine {
 		glBindTexture(target, objectID);
 	}
 
-	uint Texture::getID(){
+	int Texture::getID(){
 		return objectID;
 	}
 

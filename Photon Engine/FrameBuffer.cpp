@@ -29,7 +29,7 @@ namespace ph_engine {
 		}
 	}
 
-	void FrameBuffer::attachRenderBuffer(RenderBuffer rb, uint attachType){
+	void FrameBuffer::attachRenderBuffer(RenderBuffer rb, int attachType){
 		glFramebufferRenderbuffer(target, attachType, GL_RENDERBUFFER, rb.getID());
 	}
 
@@ -44,7 +44,7 @@ namespace ph_engine {
 		glBindFramebuffer(target, 0);
 	}
 
-	void FrameBuffer::colorBuffer(uint buffer){
+	void FrameBuffer::colorBuffer(int buffer){
 		glDrawBuffer(buffer);
 	}
 

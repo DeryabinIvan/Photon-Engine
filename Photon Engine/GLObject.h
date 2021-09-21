@@ -6,6 +6,6 @@
 namespace ph_engine {
 	class GLObject {
 		protected:
-			uint objectID = 0, target = 0;
+			GLuint objectID = 0, target = 0;
 	};
 }

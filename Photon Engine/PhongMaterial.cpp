@@ -36,6 +36,10 @@ namespace ph_engine {
 		specularMap = specular;
 	}
 
+	void PhongMaterial::setNormal(Texture normal) {
+		normalMap = normal;
+	}
+
 	void PhongMaterial::setShininess(float s){
 		shininess = s;
 	}
@@ -49,6 +53,11 @@ namespace ph_engine {
 		specBlock = block;
 	}
 
+	void PhongMaterial::loadNormal(std::string path, int block) {
+		specularMap.loadFromFile(path.c_str());
+		specBlock = block;
+	}
+
 	void PhongMaterial::activeDiffuse(){
 		diffuseMap.activeTexture(diffBlock);
 		diffuseMap.bind();
@@ -56,6 +65,11 @@ namespace ph_engine {
 	void PhongMaterial::activeSpecular(){
 		specularMap.activeTexture(specBlock);
 		specularMap.bind();
+	}
+
+	void PhongMaterial::activeNormal() {
+		normalMap.activeTexture(normalBlock);
+		normalMap.bind();
 	}
 
 	bool PhongMaterial::haveDiffuseMap() const{
@@ -66,18 +80,28 @@ namespace ph_engine {
 		return (specBlock != -1);
 	}
 
+	bool PhongMaterial::haveNormalMap() const {
+		return (normalBlock != -1);
+	}
+
 	void PhongMaterial::sendInShader(ShaderProgram& program, const std::string name){
 		program.setVec3(name + ".ambient", ambient);
 		program.setFloat(name + ".shininess", shininess);
 
-		if(diffBlock == -1)
+		if (diffBlock == -1) {
 			program.setVec3(name + ".diffuse", diffuse);
-		else
+		} else {
 			program.setInt(name + ".diffuse", diffBlock);
+		}
 
-		if(specBlock == -1)
+		if(specBlock == -1) {
 			program.setInt(name + ".specular", diffBlock);
-		else
+		} else {
 			program.setInt(name + ".specular", specBlock);
+		}
+
+		if (haveNormalMap()) {
+			program.setInt(name + ".normal", normalBlock);
+		}
 	}
 }

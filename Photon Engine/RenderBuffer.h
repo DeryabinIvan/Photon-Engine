@@ -8,9 +8,9 @@ namespace ph_engine {
 			RenderBuffer();
 			~RenderBuffer();
 
-			void create(uint storComponet, uint width, uint height);
+			void create(int storComponet, int width, int height);
 
-			uint getID();
+			int getID();
 
 			void bind();
 			void bindBaseBuffer();

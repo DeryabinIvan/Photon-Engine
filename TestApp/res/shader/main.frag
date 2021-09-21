@@ -24,6 +24,7 @@ struct Light{
 struct Material{
 	sampler2D diffuse;
 	sampler2D specular;
+	//sampler2D normal;
 
 	float shininess;
 };
@@ -74,6 +75,7 @@ vec3 dotLight(Light light){
 vec3 spotLight(Light light) {
 	float distance    = length(light.position.xyz - FragPos);
 	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+	
 	//Ambient
 	vec3 ambient = light.ambientStrength;
 

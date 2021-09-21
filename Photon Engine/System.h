@@ -12,7 +12,7 @@ namespace ph_engine {
 			static void setTime(double time);
 
 			//Error
-			static uint getGLError();
+			static int getGLError();
 			static void printGLError();
 
 			//OpenGL debug callback

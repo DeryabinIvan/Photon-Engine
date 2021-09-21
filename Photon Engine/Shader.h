@@ -12,7 +12,7 @@ namespace ph_engine {
 			bool loadFromStr(const char* str, SHADER_TYPE type);
 			bool loadFromFile(const char* filename, SHADER_TYPE type);
 
-			uint getID() { return objectID; }
+			int getID() { return objectID; }
 
 			void remove();
 	};

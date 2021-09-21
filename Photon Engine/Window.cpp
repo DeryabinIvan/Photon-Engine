@@ -77,19 +77,19 @@ namespace ph_engine {
 		glClearColor(tmp.r, tmp.g, tmp.b, tmp.a);
 	}
 
-	void Window::clearBuffers(uint buffersList){
+	void Window::clearBuffers(int buffersList){
 		glClear(buffersList);
 	}
 
-	void Window::draw(Render_Mode mode, uint first, uint count) {
+	void Window::draw(Render_Mode mode, int first, int count) {
 		glDrawArrays(mode, first, count);
 	}
 
-	void Window::enableFeature(uint glFeature) {
+	void Window::enableFeature(int glFeature) {
 		glEnable(glFeature);
 	}
 
-	void Window::disableFeature(uint glFeature) {
+	void Window::disableFeature(int glFeature) {
 		glDisable(glFeature);
 	}
 

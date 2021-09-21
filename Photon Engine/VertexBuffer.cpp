@@ -26,12 +26,12 @@ namespace ph_engine {
 		}
 	}
 
-	void VertexBuffer::addVertexAttrib(uint index, uint size, bool normalized, int stride, const void* offset) {
+	void VertexBuffer::addVertexAttrib(int index, int size, bool normalized, int stride, const void* offset) {
 		glVertexAttribPointer(index, size, GL_FLOAT, normalized, stride, offset);
 	}
 
-	void VertexBuffer::enableAttrib(uint index) { glEnableVertexAttribArray(index); }
-	void VertexBuffer::disableAttrib(uint index) { glDisableVertexAttribArray(index); }
+	void VertexBuffer::enableAttrib(int index) { glEnableVertexAttribArray(index); }
+	void VertexBuffer::disableAttrib(int index) { glDisableVertexAttribArray(index); }
 
 	void VertexBuffer::bind() {
 		glBindBuffer(target, objectID);

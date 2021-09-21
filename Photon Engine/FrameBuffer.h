@@ -14,14 +14,14 @@ namespace ph_engine {
 			~FrameBuffer();
 
 			void attachTexture(Texture& texture, AttachmentType type);
-			void attachRenderBuffer(RenderBuffer rb, uint attachType);
+			void attachRenderBuffer(RenderBuffer rb, int attachType);
 
 			//@return return true if framebuffer not complete
 			bool checkErrors();
 
 			void bind();
 			void bindBaseBuffer();
-			void colorBuffer(uint buffer);
+			void colorBuffer(int buffer);
 
 			void remove();
 	};

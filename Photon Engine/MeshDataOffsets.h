@@ -5,18 +5,18 @@
 namespace ph_engine {
 	class PHOTONENGINE_API MeshDataHelper {
 		bool has_vert, has_norm, has_color, has_texture, has_ind;
-		std::pair<uint, uint> vertex, normal, color, texture, index;
-		uint text_repeat = 0;
+		std::pair<int, int> vertex, normal, color, texture, index;
+		int text_repeat = 0;
 
 		public:
 			MeshDataHelper();
 
-			void setVertex(uint offset, uint step);
-			void setNormal(uint offset, uint step);
-			void setColor(uint offset, uint step);
-			void setTexture(uint offset, uint step);
-			void setIndex(uint offset, uint step);
-			void setTextureRepeat(uint times);
+			void setVertex(int offset, int step);
+			void setNormal(int offset, int step);
+			void setColor(int offset, int step);
+			void setTexture(int offset, int step);
+			void setIndex(int offset, int step);
+			void setTextureRepeat(int times);
 
 			bool hasVertex();
 			bool hasNormal();
@@ -25,11 +25,11 @@ namespace ph_engine {
 			bool hasIndex();
 			bool hasRepeatTex();
 
-			std::pair<uint, uint> getVertex();
-			std::pair<uint, uint> getNormal();
-			std::pair<uint, uint> getColor();
-			std::pair<uint, uint> getTexture();
-			std::pair<uint, uint> getIndex();
-			uint getRepeatTimes();
+			std::pair<int, int> getVertex();
+			std::pair<int, int> getNormal();
+			std::pair<int, int> getColor();
+			std::pair<int, int> getTexture();
+			std::pair<int, int> getIndex();
+			int getRepeatTimes();
 	};
 }

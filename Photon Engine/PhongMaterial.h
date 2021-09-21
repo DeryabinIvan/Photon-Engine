@@ -13,8 +13,8 @@ namespace ph_engine {
 				  specular = glm::vec3(0);
 		float shininess = 64;
 
-		Texture diffuseMap, specularMap;
-		int diffBlock = -1, specBlock = -1;
+		Texture diffuseMap, specularMap, normalMap;
+		int diffBlock = -1, specBlock = -1, normalBlock = -1;
 
 		public:
 			PhongMaterial();
@@ -29,17 +29,22 @@ namespace ph_engine {
 
 			void setDiffuse(Texture diffuse);
 			void setSpecular(Texture specular);
+			void setNormal(Texture normal);
 
 			void setShininess(float s);
 
 			//Textures maps
 			void loadDiffuse(std::string path, int block);
 			void loadSpecular(std::string path, int block);
+			void loadNormal(std::string path, int block);
+			
 			void activeDiffuse();
 			void activeSpecular();
+			void activeNormal();
 
 			bool haveDiffuseMap() const;
 			bool haveSpecularMap() const;
+			bool haveNormalMap() const;
 			
 			// Inherited via ShaderIO
 			virtual void sendInShader(ShaderProgram& program, const std::string name) override;

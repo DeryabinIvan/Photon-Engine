@@ -7,7 +7,8 @@
 namespace ph_engine {
 	class PHOTONENGINE_API Texture:public GLObject {
 		public:
-			enum class TEXTURE_TYPE { COLOR, DEPTH, STENCIL };
+			enum class TEXTURE_COLOR_TYPE { COLOR, DEPTH, STENCIL };
+			enum class TEXTURE_TYPE { DIFFUSE, SPECULAR, NORMAL, AMBIENT_OCCLUSION, ROUGNESS };
 			enum class TEXTURE_CHANNELS { GREY = 1, RGB = 3, RGBA = 4 };
 
 			Texture();
@@ -16,23 +17,23 @@ namespace ph_engine {
 			void loadFromFile(const char* path);
 
 			// Create empty texture
-			void emptyTexture(TEXTURE_TYPE textureType, uint width, uint height);
+			void emptyTexture(TEXTURE_COLOR_TYPE textureType, int width, int height);
 
 			//Save texture to file
 			void save(const char* path);
 
-			static void activeTexture(uint);
-			TEXTURE_TYPE getType() { return type; }
+			static void activeTexture(int);
+			TEXTURE_COLOR_TYPE getType() { return type; }
 
 			void bind();
-			uint getID();
+			int getID();
 
 		private:
 		    int width, heigth;
 			std::string path;
 			
 			TEXTURE_CHANNELS components;
-			TEXTURE_TYPE type = TEXTURE_TYPE::COLOR;
+			TEXTURE_COLOR_TYPE type = TEXTURE_COLOR_TYPE::COLOR;
 
 			TEXTURE_CHANNELS channelsCount(const char* path);
 	};

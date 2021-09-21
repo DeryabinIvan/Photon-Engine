@@ -8,38 +8,38 @@ namespace ph_engine {
 		has_texture(false),
 		has_ind(false) {};
 
-	void MeshDataHelper::setVertex(uint offset, uint step) {
+	void MeshDataHelper::setVertex(int offset, int step) {
 		has_vert = true;
 
 		vertex.first = offset;
 		vertex.second = step;
 	}
-	void MeshDataHelper::setNormal(uint offset, uint step) {
+	void MeshDataHelper::setNormal(int offset, int step) {
 		has_norm = true;
 
 		normal.first = offset;
 		normal.second = step;
 	}
-	void MeshDataHelper::setColor(uint offset, uint step) {
+	void MeshDataHelper::setColor(int offset, int step) {
 		has_color = true;
 
 		color.first = offset;
 		color.second = step;
 	}
-	void MeshDataHelper::setTexture(uint offset, uint step) {
+	void MeshDataHelper::setTexture(int offset, int step) {
 		has_texture = true;
 
 		texture.first = offset;
 		texture.second = step;
 	}
-	void MeshDataHelper::setIndex(uint offset, uint step) {
+	void MeshDataHelper::setIndex(int offset, int step) {
 		has_ind = true;
 
 		index.first = offset;
 		index.second = step;
 	}
 
-	void MeshDataHelper::setTextureRepeat(uint times) {
+	void MeshDataHelper::setTextureRepeat(int times) {
 		text_repeat = times;
 	}
 
@@ -53,37 +53,37 @@ namespace ph_engine {
 		return text_repeat > 0;
 	}
 
-	std::pair<uint, uint> MeshDataHelper::getVertex() {
+	std::pair<int, int> MeshDataHelper::getVertex() {
 		if (has_vert)
 			return vertex;
 		else
-			return std::pair<uint, uint>(0, 0);
+			return std::pair<int, int>(0, 0);
 	}
-	std::pair<uint, uint> MeshDataHelper::getNormal() {
+	std::pair<int, int> MeshDataHelper::getNormal() {
 		if (has_norm)
 			return normal;
 		else
-			return std::pair<uint, uint>(0, 0);
+			return std::pair<int, int>(0, 0);
 	}
-	std::pair<uint, uint> MeshDataHelper::getColor() {
+	std::pair<int, int> MeshDataHelper::getColor() {
 		if (has_color)
 			return color;
 		else
-			return std::pair<uint, uint>(0, 0);
+			return std::pair<int, int>(0, 0);
 	}
-	std::pair<uint, uint> MeshDataHelper::getTexture() {
+	std::pair<int, int> MeshDataHelper::getTexture() {
 		if (has_texture)
 			return texture;
 		else
-			return std::pair<uint, uint>(0, 0);
+			return std::pair<int, int>(0, 0);
 	}
-	std::pair<uint, uint> MeshDataHelper::getIndex() {
+	std::pair<int, int> MeshDataHelper::getIndex() {
 		if (has_ind)
 			return index;
 		else
-			return std::pair<uint, uint>(0, 0);
+			return std::pair<int, int>(0, 0);
 	}
-	uint MeshDataHelper::getRepeatTimes() {
+int MeshDataHelper::getRepeatTimes() {
 		return text_repeat;
 	}
 }

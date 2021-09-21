@@ -15,11 +15,11 @@ namespace ph_engine {
 
 			void remove() { this->~VertexBuffer(); }
 
-			void addVertexAttrib(uint index, uint size, bool normalized, int stride, const void* offset = (void*) 0);
+			void addVertexAttrib(int index, int size, bool normalized, int stride, const void* offset = (void*) 0);
 			//Enable attrib by index
-			void enableAttrib(uint index);
+			void enableAttrib(int index);
 			//Disable attrib by index
-			void disableAttrib(uint index);
+			void disableAttrib(int index);
 
 			void bind();
 			void unbind();

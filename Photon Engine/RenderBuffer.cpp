@@ -11,11 +11,11 @@ namespace ph_engine {
 		remove();
 	}
 
-	void RenderBuffer::create(uint storComponet, uint width, uint height){
+	void RenderBuffer::create(int storComponet, int width, int height){
 		glRenderbufferStorage(target, storComponet, width, height);
 	}
 
-	uint RenderBuffer::getID(){
+	int RenderBuffer::getID(){
 		return objectID;
 	}
 

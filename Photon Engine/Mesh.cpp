@@ -3,7 +3,7 @@
 #include "GLEW/glew.h"
 
 namespace ph_engine {
-	Mesh::Mesh(vector<Vertex>& vert, vector<uint>& ind) {
+	Mesh::Mesh(vector<Vertex>& vert, vector<int>& ind) {
 		indSize = ind.size();
 
 		vbo = new VertexBuffer();
@@ -15,7 +15,7 @@ namespace ph_engine {
 		vbo->load(vert.size() * sizeof(Vertex), &vert[0]);
 
 		ebo->bind();
-		ebo->load(ind.size() * sizeof(uint), &ind[0]);
+		ebo->load(ind.size() * sizeof(int), &ind[0]);
 
 		//positions
 		vbo->enableAttrib(0);
@@ -39,7 +39,7 @@ namespace ph_engine {
 
 		vector<float> vec_ind, vec_data;
 		bool _ind = off.hasIndex();
-		uint row_offset = off.getVertex().second + off.getNormal().second + off.getColor().second + off.getTexture().second;
+		int row_offset = off.getVertex().second + off.getNormal().second + off.getColor().second + off.getTexture().second;
 
 		float* _data = ((float*) raw_data);
 
@@ -77,7 +77,7 @@ namespace ph_engine {
 
 		//init VAO, VBO, EBO...
 		int attrib = 0;
-		uint stride = sizeof(float) * row_offset;
+		int stride = sizeof(float) * row_offset;
 
 		vao->bind();
 		vbo->bind();
@@ -86,7 +86,7 @@ namespace ph_engine {
 
 		if (_ind) {
 			ebo->bind();
-			ebo->load(vec_ind.size() * sizeof(uint), &vec_ind[0]);
+			ebo->load(vec_ind.size() * sizeof(int), &vec_ind[0]);
 		}
 
 		//position
@@ -120,22 +120,30 @@ namespace ph_engine {
 		vao->unbind();
 	}
 
-	void Mesh::loadTextures(string diffuse, string specular) {
-		if (!diffuse.empty())
-			material.loadDiffuse(diffuse, 0);
+	void Mesh::loadTexture(Texture::TEXTURE_TYPE type, string path, int block) {
+		if (path.empty()) {
+			return;
+		}
 
-		if (!specular.empty())
-			material.loadSpecular(specular, 1);
+		switch (type) {
+			case ph_engine::Texture::TEXTURE_TYPE::DIFFUSE:
+				material.loadDiffuse(path, block);
+				break;
 
-		material.setShininess(16);
-	}
+			case ph_engine::Texture::TEXTURE_TYPE::SPECULAR:
+				material.loadSpecular(path, block);
+				material.setShininess(32);
+				break;
 
-	void Mesh::setDiffuse(Texture d) {
-		material.setDiffuse(d);
-	}
+			case ph_engine::Texture::TEXTURE_TYPE::NORMAL:
+				material.loadNormal(path, block);
+				break;
 
-	void Mesh::setSpecular(Texture s) {
-		material.setSpecular(s);
+			case ph_engine::Texture::TEXTURE_TYPE::AMBIENT_OCCLUSION:
+			case ph_engine::Texture::TEXTURE_TYPE::ROUGNESS:
+			default:
+				break;
+		}
 	}
 
 	void Mesh::draw(ShaderProgram& program) {
@@ -151,11 +159,11 @@ namespace ph_engine {
 
 		if (indSize == 0) {
 			vao->bind();
-			glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+			glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertexCount);
 			vao->unbind();
 		} else {
 			vao->bind();
-			glDrawElements(GL_TRIANGLES, indSize, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, (GLsizei)indSize, GL_UNSIGNED_INT, 0);
 			vao->unbind();
 		}
 	}
