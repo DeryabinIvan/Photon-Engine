@@ -11,6 +11,8 @@ namespace ph_engine {
 	using glm::vec3;
 	using glm::vec4;
 
+	enum LigthType{ DOT, DIRECTED, SPOT, NONE };
+
 	class PHOTONENGINE_API Light:ShaderIO{
 		vec4 position;
 		vec3 direction;
@@ -18,15 +20,24 @@ namespace ph_engine {
 
 		vec3 ambient, diffuse, specular;
 		float cutOff, outCutOff;
-		int lightType;
+		LigthType lType;
 
 		float quadratic, linear, constant;
 
 		public:
-			enum { DOT, DIRECTED, SPOT };
+			Light() : ambient(0, 0, 0),
+				diffuse(0, 0, 0),
+				specular(0, 0, 0),
+				color(0, 0, 0),
+				cutOff(0),
+				outCutOff(0),
+				lType(LigthType::NONE),
+				direction(0, 0, 0),
+				position(0, 0, 0, 0),
+				linear(0), quadratic(0), constant(0)
+			{};
 
-			Light() = default;
-			Light(vec3 position, vec3 direction, Color& color, int lightType);
+			Light(vec3 position, vec3 direction, Color& color, LigthType lightType);
 			
 			void setAmbient(float a);
 			void setDiffuse(float d);

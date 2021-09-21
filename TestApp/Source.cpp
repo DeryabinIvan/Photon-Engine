@@ -3,11 +3,9 @@
 using namespace ph_engine;
 
 int frames = 0;
-bool secondPass = false;
 
 void frameEvent() {
 	frames = 0;
-	secondPass = true;
 }
 
 int main() {
@@ -47,7 +45,7 @@ int main() {
 
 	glm::vec3 position = glm::vec3(0, 1, 1), viewDirection;
 
-	Player player(position, 4.0f / 144.0f);
+	Player player(position, 0.01f);
 	Camera camera(position, glm::vec3(0, 0, -3));
 
 	bool isFreeCam = false, isMoving = true;
@@ -67,7 +65,7 @@ int main() {
 
 	spot.makeSpot(position, glm::vec3(0, 0, -3), 10, 20, white);
 	spot.setAmbient(0.f);
-	spot.setDiffuse(0.5f);
+	spot.setDiffuse(1.f);
 	spot.setSpecular(1.f);
 	spot.setAttenuation(0.032f, 0.09f, 1.f);
 
@@ -79,11 +77,11 @@ int main() {
 	fragScreen.loadFromFile("res/shader/framebuffer_fs.glsl", Shader::FRAGMENT);
 	vertScreen.loadFromFile("res/shader/framebuffer_vs.glsl", Shader::VERTEX);
 
-	ShaderProgram screenProg;
-	screenProg.addShader(vertScreen);
-	screenProg.addShader(fragScreen);
+	ShaderProgram screenProcessing;
+	screenProcessing.addShader(vertScreen);
+	screenProcessing.addShader(fragScreen);
 
-	screenProg.link();
+	screenProcessing.link();
 	vertScreen.remove();
 	fragScreen.remove();
 
@@ -99,14 +97,14 @@ int main() {
 	};
 
 	float floorVertices[] = {
-	//  |   positions     |   normal   | texture |
-		-1.f, -1.f,  1.f, 0.f, 1.f, 0.f, 0.f, 1.f,
-		-1.f, -1.f, -1.f, 0.f, 1.f, 0.f, 0.f, 0.f,
-		 1.f, -1.f, -1.f, 0.f, 1.f, 0.f, 1.f, 0.f,
-	//  |    positions    |   normal   | texture |
-		-1.f, -1.f,  1.f, 0.f, 1.f, 0.f, 0.f, 1.f,
-		 1.f, -1.f, -1.f, 0.f, 1.f, 0.f, 1.f, 0.f,
-		 1.f, -1.f,  1.f, 0.f, 1.f, 0.f, 1.f, 1.f
+	//  |    positions    |    normal    | texture |
+		-10.f, -1.f,  10.f, 0.f, 1.f, 0.f, 0.f, 1.f,
+		-10.f, -1.f, -10.f, 0.f, 1.f, 0.f, 0.f, 0.f,
+		 10.f, -1.f, -10.f, 0.f, 1.f, 0.f, 1.f, 0.f,
+	//  |    positions    |    normal    | texture |
+		-10.f, -1.f,  10.f, 0.f, 1.f, 0.f, 0.f, 1.f,
+		 10.f, -1.f, -10.f, 0.f, 1.f, 0.f, 1.f, 0.f,
+		 10.f, -1.f,  10.f, 0.f, 1.f, 0.f, 1.f, 1.f,
 	};
 
 	MeshDataHelper quadOffsets, floorOffsets;
@@ -116,16 +114,17 @@ int main() {
 	floorOffsets.setVertex(0, 3);
 	floorOffsets.setNormal(3, 3);
 	floorOffsets.setTexture(6, 2);
+	floorOffsets.setTextureRepeat(10);
 
-	Mesh plane(quadOffsets, quadVertices, sizeof(quadVertices) / sizeof(float));
+	Mesh screenMesh(quadOffsets, quadVertices, sizeof(quadVertices) / sizeof(float));
 
-	Mesh floor(floorOffsets, floorVertices, sizeof(floorVertices) / sizeof(float));
-	floor.loadTextures("res/model/floor.png", "res/model/floor.png");
-	 
-	floor.translate(0, 0, 0);
+	Mesh floorMesh(floorOffsets, floorVertices, sizeof(floorVertices) / sizeof(float));
+	floorMesh.loadTextures("res/model/wood wicker/basecolor.png", "res/model/wood wicker/ambientOcclusion.png");
+
+	floorMesh.translate(0, 0, 0);
 	vec3 rotateAxis = vec3(1, 0, 0);
 
-	Texture color, depth;
+	Texture colorTex, depthTex;
 	FrameBuffer framebuffer;
 
 	/*RenderBuffer renderbuffer;
@@ -133,12 +132,12 @@ int main() {
 	renderbuffer.create(GL_DEPTH_COMPONENT24, width, height);
 	renderbuffer.bindBaseBuffer();*/
 
-	color.emptyTexture(Texture::TEXTURE_TYPE::COLOR, width, height);
-	depth.emptyTexture(Texture::TEXTURE_TYPE::DEPTH, width, height);
+	colorTex.emptyTexture(Texture::TEXTURE_TYPE::COLOR, width, height);
+	depthTex.emptyTexture(Texture::TEXTURE_TYPE::DEPTH, width, height);
 
 	framebuffer.bind();
-	framebuffer.attachTexture(color, FrameBuffer::AttachmentType::COLOR);
-	framebuffer.attachTexture(depth, FrameBuffer::AttachmentType::DEPTH);
+	framebuffer.attachTexture(colorTex, FrameBuffer::AttachmentType::COLOR);
+	framebuffer.attachTexture(depthTex, FrameBuffer::AttachmentType::DEPTH);
 	//framebuffer.attachRenderBuffer(renderbuffer, GL_DEPTH_ATTACHMENT);
 
 	if (framebuffer.checkErrors()) {
@@ -152,8 +151,6 @@ int main() {
 	timer.setDuration(1000);
 	timer.setTimerCallback(frameEvent);
 	timer.startMT();
-
-	std::stringstream ss;
 
 	//Render loop
 	while (!window.shouldClose()) {
@@ -178,10 +175,6 @@ int main() {
 		}
 
 		if (isFreeCam) {
-			if (secondPass) {
-				player.setSpeed(1.f / (frames * 10));
-				secondPass = false;
-			}
 			player.move(keyboard);
 			player.look(mouse);
 		}
@@ -203,12 +196,6 @@ int main() {
 		if (isFreeCam) {
 			position = player.getPosition();
 			viewDirection = player.getFrontVec();
-			
-			ss  << "Posistion. X: "       << position.x      << " Y: " << position.y      << " Z: " << position.z << " " 
-				<<  "View direction. X: " << viewDirection.x << " Y: " << viewDirection.y << " Z: " << viewDirection.z;
-
-			window.setTitle(ss.str());
-			ss.str("");
 
 			program.setMat4("view", player.getViewMatrix());
 
@@ -233,8 +220,8 @@ int main() {
 		program.setMat4("model", cube.getModelMatrix());
 		cube.draw(program);
 
-		program.setMat4("model", floor.getModelMatrix());
-		floor.draw(program);
+		program.setMat4("model", floorMesh.getModelMatrix());
+		floorMesh.draw(program);
 
 		//screen render
 		framebuffer.bindBaseBuffer();
@@ -242,12 +229,12 @@ int main() {
 		window.clearColor(grey);
 		window.clearBuffers(GL_COLOR_BUFFER_BIT);
 
-		screenProg.use();
-		color.bind();
-		plane.draw(screenProg);
+		screenProcessing.use();
+		colorTex.bind();
+		screenMesh.draw(screenProcessing);
 
 		if (keyboard.keyPressedOnce(Keyboard::KEY_F12)) {
-			color.save("color_buffer.png");
+			colorTex.save("color_buffer.png");
 			std::cerr << "F12 pressed" << std::endl;
 		}
 

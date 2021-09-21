@@ -11,7 +11,7 @@ namespace ph_engine {
 		glm::vec3 ambient = glm::vec3(0), 
 				  diffuse = glm::vec3(0),
 				  specular = glm::vec3(0);
-		float shininess = 32;
+		float shininess = 64;
 
 		Texture diffuseMap, specularMap;
 		int diffBlock = -1, specBlock = -1;
@@ -26,6 +26,9 @@ namespace ph_engine {
 			void setAmbient(float ambient);
 			void setDiffuse(float diffuse);
 			void setSpecular(float specular);
+
+			void setDiffuse(Texture diffuse);
+			void setSpecular(Texture specular);
 
 			void setShininess(float s);
 

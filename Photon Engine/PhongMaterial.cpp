@@ -28,6 +28,14 @@ namespace ph_engine {
 		specular = glm::vec3(s);
 	}
 
+	void PhongMaterial::setDiffuse(Texture diffuse) {
+		diffuseMap = diffuse;
+	}
+
+	void PhongMaterial::setSpecular(Texture specular) {
+		specularMap = specular;
+	}
+
 	void PhongMaterial::setShininess(float s){
 		shininess = s;
 	}

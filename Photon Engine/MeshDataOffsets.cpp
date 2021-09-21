@@ -39,11 +39,19 @@ namespace ph_engine {
 		index.second = step;
 	}
 
+	void MeshDataHelper::setTextureRepeat(uint times) {
+		text_repeat = times;
+	}
+
 	bool MeshDataHelper::hasVertex() { return has_vert; }
 	bool MeshDataHelper::hasNormal() { return has_norm; }
 	bool MeshDataHelper::hasColor() { return has_color; }
 	bool MeshDataHelper::hasTexture() { return has_texture; }
 	bool MeshDataHelper::hasIndex() { return has_ind; }
+
+	bool MeshDataHelper::hasRepeatTex() {
+		return text_repeat > 0;
+	}
 
 	std::pair<uint, uint> MeshDataHelper::getVertex() {
 		if (has_vert)
@@ -74,5 +82,8 @@ namespace ph_engine {
 			return index;
 		else
 			return std::pair<uint, uint>(0, 0);
+	}
+	uint MeshDataHelper::getRepeatTimes() {
+		return text_repeat;
 	}
 }

@@ -33,13 +33,13 @@ namespace ph_engine {
 	}
 
 	//???
-	Mesh::Mesh(MeshDataHelper off, const void* raw_data, size_t size) {
+	Mesh::Mesh(MeshDataHelper &off, const void* raw_data, size_t size) {
 		vbo = new VertexBuffer();
 		vao = new VertexArray();
 
 		vector<float> vec_ind, vec_data;
 		bool _ind = off.hasIndex();
-		uint step_offset = off.getVertex().second + off.getNormal().second + off.getColor().second + off.getTexture().second;
+		uint row_offset = off.getVertex().second + off.getNormal().second + off.getColor().second + off.getTexture().second;
 
 		float* _data = ((float*) raw_data);
 
@@ -62,11 +62,22 @@ namespace ph_engine {
 				vec_data.push_back(_data[i]);
 		}
 
-		vertexCount = vec_data.size() / step_offset;
+		vertexCount = vec_data.size() / row_offset;
+
+		if (off.hasRepeatTex()) {
+			const int texOffset = off.getTexture().first, 
+				      texCount  = off.getTexture().second;
+
+			for (size_t i = 0; i < vertexCount; i++) {
+				for (size_t j = 0; j < texCount; j++) {
+					vec_data[(i * row_offset) + texOffset + j] *= off.getRepeatTimes();
+				}
+			}
+		}
 
 		//init VAO, VBO, EBO...
 		int attrib = 0;
-		uint stride = sizeof(float) * step_offset;
+		uint stride = sizeof(float) * row_offset;
 
 		vao->bind();
 		vbo->bind();
@@ -117,6 +128,14 @@ namespace ph_engine {
 			material.loadSpecular(specular, 1);
 
 		material.setShininess(16);
+	}
+
+	void Mesh::setDiffuse(Texture d) {
+		material.setDiffuse(d);
+	}
+
+	void Mesh::setSpecular(Texture s) {
+		material.setSpecular(s);
 	}
 
 	void Mesh::draw(ShaderProgram& program) {

@@ -29,10 +29,12 @@ namespace ph_engine {
 				glm::vec2 texCoord;
 			};
 
-			Mesh(MeshDataHelper off, const void *raw_data, size_t elements);
+			Mesh(MeshDataHelper &off, const void* raw_data, size_t elements);
 			Mesh(vector<Vertex> &vert, vector<uint> &ind);
 
 			void loadTextures(string diffuse, string specular);
+			void setDiffuse(Texture d);
+			void setSpecular(Texture s);
 
 			void draw(ShaderProgram& program);
 
